@@ -1,0 +1,26 @@
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+html {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Varela Round', sans-serif;
+}
+
+#app {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+}
+
+#button {
+  background-color: #2ebd59;
+  width: 300px;
+  margin: 0 auto;
+  line-height: 50px;
+  border-radius: 25px;
+}
+
+#button:hover {
+  background-color: #42c369;
+  cursor: pointer;
+}
