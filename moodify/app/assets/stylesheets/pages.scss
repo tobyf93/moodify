@@ -1,3 +1,61 @@
-// Place all the styles related to the Pages controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Varela Round', sans-serif;
+}
+
+#app {
+  width: 600px;
+  margin: 0 auto;
+}
+
+#header {
+  text-align: center;
+}
+
+#button {
+  background-color: #2ebd59;
+  width: 300px;
+  margin: 0 auto;
+  line-height: 50px;
+  border-radius: 25px;
+
+  &:hover {
+    background-color: #42c369;
+    cursor: pointer;
+  }
+}
+
+.list-group {
+  margin-top: 25px;
+  border-radius: 0;
+}
+
+.list-group-item {
+  background-color: #000;
+  border-width: 1px 0 0 0;
+  border-color: #919496;
+
+  &:first-child {
+    background-color: #000;
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  &:last-child {
+    border-radius: 0;
+  }
+
+  .glyphicon {
+    display: inline-block;
+    font-size: 1.5em;
+    top: 5px;
+    margin-right: 25px;
+  }
+
+  &:hover {
+    background-color: #333;
+  }
+}
