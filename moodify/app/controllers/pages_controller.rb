@@ -7,8 +7,11 @@ class PagesController < ApplicationController
 
       playlists = user.playlists
       @my_playlists = get_my_playlists user.id, playlists
-      # @tracks = playlists.first.tracks
 
+      song = Echonest::Song.new('PWBP6ZPNBM8WFOEFT')
+      song.search :artist => 'Michael Jackson'
+
+      response = HTTParty.get('http://developer.echonest.com/api/v4/song/search?api_key=PWBP6ZPNBM8WFOEFT&format=json&artist=michael%20jackson&title=beat%20it&bucket=audio_summary')
     end
 
   end
