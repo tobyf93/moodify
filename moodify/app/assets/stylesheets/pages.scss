@@ -21,24 +21,24 @@ body {
   margin: 0 auto;
   line-height: 50px;
   border-radius: 25px;
-}
 
-#button:hover {
-  background-color: #42c369;
-  cursor: pointer;
+  &:hover {
+    background-color: #42c369;
+    cursor: pointer;
+  }
 }
 
 .list-group {
   margin-top: 25px;
 }
 
-.list-group-item:first-child {
-  background-color: #000;
-  border-width: 0;
-}
-
 .list-group-item {
   background-color: #000;
   border-width: 1px 0 0 0;
   border-color: #919496;
+
+  &:first-child {
+    background-color: #000;
+    border-width: 0;
+  }
 }
