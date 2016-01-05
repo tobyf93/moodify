@@ -7,16 +7,27 @@ class PagesController < ApplicationController
       user = RSpotify::User.new(request.env['omniauth.auth'])
 
       playlists = user.playlists
-      # my_playlists = get_my_playlists user.id, playlists
-      gon.playlists = my_playlists
-
-      response = HTTParty.get('http://developer.echonest.com/api/v4/song/search?api_key=PWBP6ZPNBM8WFOEFT&format=json&artist=michael%20jackson&title=beat%20it&bucket=audio_summary')
+      gon.playlists = playlists
     end
   end
 
   def analyze
     user = RSpotify::User.new(session[:omniauth])
     @playlists = user.playlists
+
+    track = @playlists[0].tracks[0]
+    name = track.name.gsub(/\s/, '+')
+    artist = track.artists[0].name.gsub(/\s/, '+')
+
+    song = Echonest::Song.new('PWBP6ZPNBM8WFOEFT')
+    params = {
+      :title => name,
+      :artist => artist,
+      :bucket => 'audio_summary'
+    }
+    song.search(params)
+
+    raise 'hello'
   end
 
   def get_my_playlists user_id, playlists
