@@ -3,16 +3,20 @@ class PagesController < ApplicationController
     gon.playlists = []
 
     if request.env['omniauth.auth'].present?
+      session[:omniauth] = request.env['omniauth.auth']
       user = RSpotify::User.new(request.env['omniauth.auth'])
-      # Now you can access user's private data, create playlists and much more
 
       playlists = user.playlists
-      my_playlists = get_my_playlists user.id, playlists
+      # my_playlists = get_my_playlists user.id, playlists
       gon.playlists = my_playlists
 
       response = HTTParty.get('http://developer.echonest.com/api/v4/song/search?api_key=PWBP6ZPNBM8WFOEFT&format=json&artist=michael%20jackson&title=beat%20it&bucket=audio_summary')
     end
+  end
 
+  def analyze
+    user = RSpotify::User.new(session[:omniauth])
+    @playlists = user.playlists
   end
 
   def get_my_playlists user_id, playlists

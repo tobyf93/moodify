@@ -16,11 +16,17 @@
 
   var Header = React.createClass({
     render: function() {
+      var label = 'Login';
+
+      if (gon.playlists.length > 0) {
+        label = 'Analyze Music Now';
+      }
+
       return (
         <div id="header">
           <%= image_tag 'spotify.png', width: '150' %>
           <h1>Moodify</h1>
-          <div id="button">Login</div>
+          <div id="button">{label}</div>
         </div>
       )
     }
