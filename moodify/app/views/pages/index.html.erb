@@ -27,10 +27,36 @@
   });
 
   var List = React.createClass({
+    getInitialState: function() {
+      gon.playlists.forEach(function(playlist) {
+        playlist.selected = true;
+      });
+
+      return {
+        data: gon.playlists
+      }
+    },
+
+    handleClick: function(index) {
+      var data = this.state.data;
+
+      if (data[index].selected === true) {
+        data[index].selected = false;
+      } else {
+        data[index].selected = true;
+      }
+
+      this.setState({data: data});
+    },
+
     render: function() {
       var items = [];
-      for (var i = 0; i < this.props.data.length; i++) {
-        items.push(<ListItem key={i} data={this.props.data[i]}/>);
+      for (var i = 0; i < this.state.data.length; i++) {
+        var boundClick = this.handleClick.bind(this, i);
+        items.push(<ListItem
+                    key={i}
+                    data={this.state.data[i]}
+                    onClick={boundClick}/>);
       }
 
       return (
@@ -44,10 +70,19 @@
   var ListItem = React.createClass({
     render: function() {
       var word = this.props.data.total === 1 ? 'track' : 'tracks';
+      var icon = 'glyphicon';
+
+      if (this.props.data.selected === true) {
+        icon += ' glyphicon-ok-circle';
+      } else {
+        icon += ' glyphicon-remove-circle';
+      }
 
       return (
-        <li className="list-group-item" key={this.props.key}>
-          <div className="glyphicon glyphicon-ok-circle" aria-hidden="true"></div>
+        <li className="list-group-item"
+          key={this.props.key}
+          onClick={this.props.onClick}>
+          <div className={icon} aria-hidden="true"></div>
           <div className="title">
             {this.props.data.name}<br />
             {this.props.data.total} {word}
@@ -58,7 +93,7 @@
   })
 
   ReactDOM.render(
-    <App data={gon.playlists} />,
+    <App />,
     document.getElementById('app')
   );
 </script>
