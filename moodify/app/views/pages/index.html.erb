@@ -1,6 +1,4 @@
-<div id="app">
-  <!-- <%= link_to 'Sign in with Spotify', '/auth/spotify' %> -->
-</div>
+<div id="app"></div>
 
 <script type="text/babel">
   var App = React.createClass({
@@ -15,6 +13,26 @@
   });
 
   var Header = React.createClass({
+    onClick: function() {
+      if (gon.playlists.length === 0) {
+        window.location.href = '/auth/spotify';
+      } else {
+        this.analyzePlaylists();
+      }
+    },
+
+    analyzePlaylists: function() {
+      $.ajax(
+         {
+           type: "POST",
+           url: '/analyze',
+           data: JSON.stringify(gon),
+           dataType: "json",
+           contentType: 'application/json'
+         }
+       );
+    },
+
     render: function() {
       var label = 'Login';
 
@@ -26,7 +44,10 @@
         <div id="header">
           <%= image_tag 'spotify.png', width: '150' %>
           <h1>Moodify</h1>
-          <div id="button">{label}</div>
+          <div id="button"
+                onClick={this.onClick}>
+                {label}
+          </div>
         </div>
       )
     }

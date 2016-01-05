@@ -5,17 +5,15 @@ class PagesController < ApplicationController
     if request.env['omniauth.auth'].present?
       session[:omniauth] = request.env['omniauth.auth']
       user = RSpotify::User.new(request.env['omniauth.auth'])
-
-      playlists = user.playlists
-      gon.playlists = playlists
+      gon.playlists = user.playlists
     end
   end
 
   def analyze
     user = RSpotify::User.new(session[:omniauth])
-    @playlists = user.playlists
+    playlists = user.playlists
 
-    track = @playlists[0].tracks[0]
+    track = playlists[0].tracks[0]
     name = track.name.gsub(/\s/, '+')
     artist = track.artists[0].name.gsub(/\s/, '+')
 
@@ -26,8 +24,6 @@ class PagesController < ApplicationController
       :bucket => 'audio_summary'
     }
     song.search(params)
-
-    raise 'hello'
   end
 
   def get_my_playlists user_id, playlists
