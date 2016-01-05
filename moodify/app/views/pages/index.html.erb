@@ -1,26 +1,64 @@
 <div id="app">
-  <div id="header">
-    <%= image_tag 'spotify.png', width: '150' %>
-    <h1>Moodify</h1>
-    <div id="button">Login</div>
-    <!-- <%= link_to 'Sign in with Spotify', '/auth/spotify' %> -->
-  </div>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <div class="glyphicon glyphicon-remove-circle" aria-hidden="true"></div>
-      Unselected
-    </li>
-    <li class="list-group-item">
-      <div class="glyphicon glyphicon-ok-circle" aria-hidden="true"></div>
-      Selected
-    </li>
-    <li class="list-group-item">
-      <div class="glyphicon glyphicon-remove-circle" aria-hidden="true"></div>
-      Unselected
-    </li>
-    <li class="list-group-item">
-      <div class="glyphicon glyphicon-ok-circle" aria-hidden="true"></div>
-      Selected
-    </li>
-  </ul>
+  <!-- <%= link_to 'Sign in with Spotify', '/auth/spotify' %> -->
 </div>
+
+<script type="text/babel">
+  var App = React.createClass({
+    render: function() {
+      return (
+        <div>
+          <Header />
+          <List data={this.props.data} />
+        </div>
+      );
+    }
+  });
+
+  var Header = React.createClass({
+    render: function() {
+      return (
+        <div id="header">
+          <%= image_tag 'spotify.png', width: '150' %>
+          <h1>Moodify</h1>
+          <div id="button">Login</div>
+        </div>
+      )
+    }
+  });
+
+  var List = React.createClass({
+    render: function() {
+      var items = [];
+      for (var i = 0; i < this.props.data.length; i++) {
+        items.push(<ListItem key={i} data={this.props.data[i]}/>);
+      }
+
+      return (
+        <ul className="list-group">
+          {items}
+        </ul>
+      )
+    }
+  });
+
+  var ListItem = React.createClass({
+    render: function() {
+      var word = this.props.data.total === 1 ? 'track' : 'tracks';
+
+      return (
+        <li className="list-group-item" key={this.props.key}>
+          <div className="glyphicon glyphicon-ok-circle" aria-hidden="true"></div>
+          <div className="title">
+            {this.props.data.name}<br />
+            {this.props.data.total} {word}
+          </div>
+        </li>
+      )
+    }
+  })
+
+  ReactDOM.render(
+    <App data={gon.playlists} />,
+    document.getElementById('app')
+  );
+</script>

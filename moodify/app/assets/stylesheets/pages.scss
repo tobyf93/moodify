@@ -1,5 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
 
+$dark-green: #2ebd59;
+$light-green: #42c369;
+$light-grey: #333;
+$dark-grey: #919496;
+
 body {
   background-color: #000;
   color: #fff;
@@ -16,14 +21,14 @@ body {
 }
 
 #button {
-  background-color: #2ebd59;
+  background-color: $dark-green;
   width: 300px;
   margin: 0 auto;
   line-height: 50px;
   border-radius: 25px;
 
   &:hover {
-    background-color: #42c369;
+    background-color: $light-green;
     cursor: pointer;
   }
 }
@@ -36,7 +41,8 @@ body {
 .list-group-item {
   background-color: #000;
   border-width: 1px 0 0 0;
-  border-color: #919496;
+  border-color: $dark-grey;
+  cursor: pointer;
 
   &:first-child {
     background-color: #000;
@@ -51,11 +57,17 @@ body {
   .glyphicon {
     display: inline-block;
     font-size: 1.5em;
-    top: 5px;
+    top: -5px;
     margin-right: 25px;
   }
 
+  .title {
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+  }
+
   &:hover {
-    background-color: #333;
+    background-color: $light-grey;
   }
 }

@@ -13,4 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap.min.js
+//= require react.js
+//= require react-dom.js
+//= require browser.min.js
+//= require jquery.min.js
+//= require marked.min.js
 //= require_tree .
