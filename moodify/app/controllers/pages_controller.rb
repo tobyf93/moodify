@@ -86,4 +86,41 @@ class PagesController < ApplicationController
 
     my_playlists
   end
+
+  def get_mood
+    moods = {
+      :excited => {
+        :valence => 0.38,
+        :energy => 0.92
+      },
+      :happy => {
+        :valence => 0.92,
+        :energy => 0.38
+      },
+      :chilled => {
+        :valence => 0.92,
+        :energy => -0.38
+      },
+      :peaceful => {
+        :valence => 0.38,
+        :energy => -0.92
+      },
+      :bored => {
+        :valence => -0.38,
+        :energy => -0.92
+      },
+      :depressed => {
+        :valence => -0.92,
+        :energy => -0.38
+      },
+      :stressed => {
+        :valence => -0.92,
+        :energy => 0.38
+      },
+      :aggressive => {
+        :valence => -0.38,
+        :energy => 0.92
+      },
+    }
+  end
 end
