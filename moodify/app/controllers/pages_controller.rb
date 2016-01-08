@@ -18,7 +18,7 @@ class PagesController < ApplicationController
   end
 
   def analyze
-    @data = []
+    data = []
     user = RSpotify::User.new(session[:omniauth])
 
     # playlists is the object returned from RSpotify
@@ -53,19 +53,18 @@ class PagesController < ApplicationController
             next
           end
 
+          mood = nil
           if response.empty?
-            energy = 'Unknown'
-            valence = 'Unknown'
+            mood = 'Unknown'
           else
             energy = response[0][:audio_summary][:energy]
             valence = response[0][:audio_summary][:valence]
           end
 
-          @data.push({
+          data.push({
             :title => title,
             :artist => artist,
-            :energy => energy,
-            :valence => valence
+            :mood => mood || get_mood(valence, energy)
           })
 
           puts track_idx
@@ -73,6 +72,8 @@ class PagesController < ApplicationController
         end
       end
     end
+
+    render json: data
   end
 
   def get_my_playlists user_id, playlists
@@ -87,7 +88,7 @@ class PagesController < ApplicationController
     my_playlists
   end
 
-  def get_mood
+  def get_mood valence, energy
     moods = {
       :excited => {
         :valence => 0.38,
@@ -120,7 +121,28 @@ class PagesController < ApplicationController
       :aggressive => {
         :valence => -0.38,
         :energy => 0.92
-      },
+      }
     }
+
+    if energy == 'Unknown' || valence == 'Unknown'
+      return 'Unknown'
+    end
+
+    shortest_distance = 999
+    mood = 'Unknown'
+    moods.each do |key, hash|
+      valence2 = hash[:valence]
+      energy2 = hash[:energy]
+
+      inner_equation = (valence2 - valence)**2 + (energy2 - energy)**2
+
+      distance = Math.sqrt inner_equation
+      if distance < shortest_distance
+        shortest_distance = distance
+        mood = key.to_s
+      end
+    end
+
+    mood
   end
 end
