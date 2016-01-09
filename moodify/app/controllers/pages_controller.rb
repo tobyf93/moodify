@@ -18,7 +18,7 @@ class PagesController < ApplicationController
   end
 
   def analyze
-    data = []
+    data = {}
     user = RSpotify::User.new(session[:omniauth])
 
     # playlists is the object returned from RSpotify
@@ -53,18 +53,17 @@ class PagesController < ApplicationController
             next
           end
 
-          mood = nil
-          if response.empty?
-            mood = 'Unknown'
-          else
+          mood = 'Unknown'
+          if response.present?
             energy = response[0][:audio_summary][:energy]
             valence = response[0][:audio_summary][:valence]
+            mood = get_mood(valence, energy)
           end
 
-          data.push({
+          data[mood] = data[mood] || []
+          data[mood].push({
             :title => title,
-            :artist => artist,
-            :mood => mood || get_mood(valence, energy)
+            :artist => artist
           })
 
           puts track_idx
@@ -91,36 +90,36 @@ class PagesController < ApplicationController
   def get_mood valence, energy
     moods = {
       :excited => {
-        :valence => 0.38,
-        :energy => 0.92
+        :valence => 0.691,
+        :energy => 0.962
       },
       :happy => {
-        :valence => 0.92,
-        :energy => 0.38
+        :valence => 0.962,
+        :energy => 0.691
       },
       :chilled => {
-        :valence => 0.92,
-        :energy => -0.38
+        :valence => 0.962,
+        :energy => 0.309
       },
       :peaceful => {
-        :valence => 0.38,
-        :energy => -0.92
+        :valence => 0.591,
+        :energy => 0.038
       },
       :bored => {
-        :valence => -0.38,
-        :energy => -0.92
+        :valence => 0.309,
+        :energy => 0.038
       },
       :depressed => {
-        :valence => -0.92,
-        :energy => -0.38
+        :valence => 0.038,
+        :energy => 0.309
       },
       :stressed => {
-        :valence => -0.92,
-        :energy => 0.38
+        :valence => 0.038,
+        :energy => 0.691
       },
       :aggressive => {
-        :valence => -0.38,
-        :energy => 0.92
+        :valence => 0.309,
+        :energy => 0.962
       }
     }
 
