@@ -19,12 +19,13 @@ class PagesController < ApplicationController
 
   def analyze
     data = {}
+    session[:progress] = 0
     user = RSpotify::User.new(session[:omniauth])
 
     # playlists is the object returned from RSpotify
     # playlists_req is what is returned from client (with selected field)
     playlists = user.playlists
-    playlists_req = params[:playlists]
+    playlists_req = params[:_json]
 
     playlists_req.each_with_index do |playlist_req, playlist_idx|
       if playlist_req[:selected] == true
@@ -49,7 +50,7 @@ class PagesController < ApplicationController
           begin
             response = song.search(params)
           rescue Echonest::Error
-            sleep 2
+            # sleep 2
             next
           end
 
@@ -68,6 +69,7 @@ class PagesController < ApplicationController
 
           puts track_idx
           track_idx += 1
+          session[:progress] += 1
         end
       end
     end

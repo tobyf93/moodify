@@ -33,6 +33,15 @@ body {
   }
 }
 
+#button.disabled {
+  opacity: 0.5;
+
+  &:hover {
+    background-color: $dark-green;
+    cursor: default;
+  }
+}
+
 .list-group {
   margin-top: 25px;
   border-radius: 0;

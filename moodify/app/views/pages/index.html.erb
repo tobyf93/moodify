@@ -2,11 +2,35 @@
 
 <script type="text/babel">
   var App = React.createClass({
+    getInitialState: function() {
+      gon.playlists.forEach(function(playlist) {
+        playlist.selected = true;
+      });
+
+      return {
+        data: gon.playlists
+      }
+    },
+
+    handleListClick: function(index) {
+      var data = this.state.data;
+
+      if (data[index].selected === true) {
+        data[index].selected = false;
+      } else {
+        data[index].selected = true;
+      }
+
+      this.setState({data: data});
+    },
+
     render: function() {
       return (
         <div>
-          <Header />
-          <List data={this.props.data} />
+          <Header data={this.state.data}/>
+          <List
+            data={this.state.data}
+            onClick={this.handleListClick} />
         </div>
       );
     }
@@ -14,7 +38,7 @@
 
   var Header = React.createClass({
     onClick: function() {
-      if (gon.playlists.length === 0) {
+      if (this.props.data.length === 0) {
         window.location.href = '/auth/spotify';
       } else {
         this.analyzePlaylists();
@@ -27,7 +51,7 @@
            type: "POST",
            url: '/analyze',
            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-           data: JSON.stringify(gon),
+           data: JSON.stringify(gon.playlists),
            dataType: "json",
            contentType: 'application/json'
          }
@@ -55,35 +79,14 @@
   });
 
   var List = React.createClass({
-    getInitialState: function() {
-      gon.playlists.forEach(function(playlist) {
-        playlist.selected = true;
-      });
-
-      return {
-        data: gon.playlists
-      }
-    },
-
-    handleClick: function(index) {
-      var data = this.state.data;
-
-      if (data[index].selected === true) {
-        data[index].selected = false;
-      } else {
-        data[index].selected = true;
-      }
-
-      this.setState({data: data});
-    },
-
     render: function() {
       var items = [];
-      for (var i = 0; i < this.state.data.length; i++) {
-        var boundClick = this.handleClick.bind(this, i);
+      for (var i = 0; i < this.props.data.length; i++) {
+        var boundClick = this.props.onClick.bind(null, i);
+
         items.push(<ListItem
                     key={i}
-                    data={this.state.data[i]}
+                    data={this.props.data[i]}
                     onClick={boundClick}/>);
       }
 
