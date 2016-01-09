@@ -7,9 +7,7 @@
         playlist.selected = true;
       });
 
-      return {
-        data: gon.playlists
-      }
+      return { data: gon.playlists }
     },
 
     handleListClick: function(index) {
@@ -21,13 +19,14 @@
         data[index].selected = true;
       }
 
-      this.setState({data: data});
+      this.setState({ data: data });
     },
 
     render: function() {
       return (
         <div>
-          <Header data={this.state.data}/>
+          <Header
+            data={this.state.data}/>
           <List
             data={this.state.data}
             onClick={this.handleListClick} />
@@ -37,11 +36,17 @@
   });
 
   var Header = React.createClass({
-    onClick: function() {
+    initialState: function() {
+      showProgress: false
+    },
+
+    handleButtonClick: function(e) {
       if (this.props.data.length === 0) {
         window.location.href = '/auth/spotify';
-      } else {
+      } else if (showProgress === false){
         this.analyzePlaylists();
+        this.setState({ showProgress: true });
+        $(e.target).addClass('disabled');
       }
     },
 
@@ -61,7 +66,7 @@
     render: function() {
       var label = 'Login';
 
-      if (gon.playlists.length > 0) {
+      if (this.props.data.length > 0) {
         label = 'Analyze Music Now';
       }
 
@@ -70,7 +75,7 @@
           <%= image_tag 'spotify.png', width: '150' %>
           <h1>Moodify</h1>
           <div id="button"
-                onClick={this.onClick}>
+                onClick={this.handleButtonClick}>
                 {label}
           </div>
         </div>
