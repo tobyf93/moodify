@@ -7,7 +7,7 @@
         playlist.selected = true;
       });
 
-      return { data: gon.playlists }
+      return { data: gon.playlists };
     },
 
     handleListClick: function(index) {
@@ -36,17 +36,30 @@
   });
 
   var Header = React.createClass({
-    initialState: function() {
-      showProgress: false
+    getInitialState: function() {
+      return {
+        showProgress: false,
+        totalSongs: 0
+      };
     },
 
     handleButtonClick: function(e) {
       if (this.props.data.length === 0) {
         window.location.href = '/auth/spotify';
-      } else if (showProgress === false){
+      } else if (this.state.showProgress === false){
+        var songCount = 0;
+        this.props.data.forEach(function(playlist) {
+          if (playlist.selected === true) {
+            songCount += playlist.total;
+          }
+        });
+
+        this.setState({
+          showProgress: true,
+          totalSongs: songCount
+        });
+
         this.analyzePlaylists();
-        this.setState({ showProgress: true });
-        $(e.target).addClass('disabled');
       }
     },
 
@@ -65,8 +78,13 @@
 
     render: function() {
       var label = 'Login';
+      var className = '';
 
-      if (this.props.data.length > 0) {
+      if (this.state.showProgress === true) {
+        var word = this.state.totalSongs === 1 ? 'song' : 'songs';
+        className = 'disabled';
+        label = 'Analyzed 0 of ' + this.state.totalSongs + ' ' + word;
+      } else if (this.props.data > 0) {
         label = 'Analyze Music Now';
       }
 
@@ -75,6 +93,7 @@
           <%= image_tag 'spotify.png', width: '150' %>
           <h1>Moodify</h1>
           <div id="button"
+                className={className}
                 onClick={this.handleButtonClick}>
                 {label}
           </div>
