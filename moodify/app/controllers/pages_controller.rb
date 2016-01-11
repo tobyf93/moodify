@@ -67,11 +67,15 @@ class PagesController < ApplicationController
               :artist => artist
             })
 
-            rec = Request.find_by :session_id => request.env["HTTP_COOKIE"]
+            rec = Request.find_by :ip_address => request.env["HTTP_HOST"]
             if rec.nil?
-              rec = Request.create :session_id => request.env["HTTP_COOKIE"]
+              rec = Request.create :ip_address => request.env["HTTP_HOST"]
             end
-            rec.update :data => data
+            rec.update :data => YAML.dump(data)
+
+            if track_idx == playlists[playlist_idx].tracks.length - 1
+              rec.update :done => true
+            end
 
             puts track_idx
             track_idx += 1
@@ -156,8 +160,11 @@ class PagesController < ApplicationController
 
   def status
     data = {}
-    rec = Request.find_by :session_id => request.env["HTTP_COOKIE"]
-    data = rec.data if rec.present?
+    rec = Request.find_by :ip_address => request.env["HTTP_HOST"]
+    if rec.present?
+      data = YAML.load rec.data
+      rec.destroy
+    end
 
     render json: data
   end

@@ -56,6 +56,7 @@
 
         this.setState({
           showProgress: true,
+          songsAnalyzed: 0,
           totalSongs: songCount
         });
 
@@ -78,11 +79,22 @@
     },
 
     pollStatus: function() {
-      setInterval(function() {
-        $.get('/status', function(data) {
-          console.log(data);
-        });
-      }, 5000);
+      setTimeout(this._pollStatus, 1000);
+    },
+
+    _pollStatus: function() {
+      $.get('/status', function(data) {
+        var count = 0;
+
+        for (var key in data) {
+          count += data[key].length;
+        }
+
+        this.setState({ songsAnalyzed: count });
+        if (this.state.songsAnalyzed < this.state.totalSongs) {
+          this.pollStatus();
+        }
+      }.bind(this));
     },
 
     render: function() {
@@ -92,8 +104,8 @@
       if (this.state.showProgress === true) {
         var word = this.state.totalSongs === 1 ? 'song' : 'songs';
         className = 'disabled';
-        label = 'Analyzed 0 of ' + this.state.totalSongs + ' ' + word;
-      } else if (this.props.data > 0) {
+        label = 'Analyzed ' + this.state.songsAnalyzed + ' of ' + this.state.totalSongs + ' ' + word;
+      } else if (this.props.data.length > 0) {
         label = 'Analyze Music Now';
       }
 
