@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160110234645) do
+ActiveRecord::Schema.define(version: 20160111004348) do
 
   create_table "requests", force: :cascade do |t|
-    t.string "session_id"
     t.text   "data"
+    t.string "ip_address"
   end
 
 end
