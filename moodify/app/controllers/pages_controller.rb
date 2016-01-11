@@ -19,7 +19,6 @@ class PagesController < ApplicationController
 
   def analyze
     data = {}
-    session[:progress] = 0
     user = RSpotify::User.new(session[:omniauth])
 
     # playlists is the object returned from RSpotify
@@ -27,54 +26,62 @@ class PagesController < ApplicationController
     playlists = user.playlists
     playlists_req = params[:_json]
 
-    playlists_req.each_with_index do |playlist_req, playlist_idx|
-      if playlist_req[:selected] == true
-        track_idx = 0
-        puts playlists[playlist_idx].tracks.length
-        while track_idx < playlists[playlist_idx].tracks.length do
-          # Needs to be moved
-          song = Echonest::Song.new('PWBP6ZPNBM8WFOEFT')
+    Thread.new do
+      playlists_req.each_with_index do |playlist_req, playlist_idx|
+        if playlist_req[:selected] == true
+          track_idx = 0
+          puts playlists[playlist_idx].tracks.length
+          while track_idx < playlists[playlist_idx].tracks.length do
+            # Needs to be moved
+            song = Echonest::Song.new('PWBP6ZPNBM8WFOEFT')
 
-          track = playlists[playlist_idx].tracks[track_idx]
-          title = track.name
-          artist = track.artists[0].name
-          url_name = track.name.gsub(/\s/, '+')
-          url_artist = track.artists[0].name.gsub(/\s/, '+')
+            track = playlists[playlist_idx].tracks[track_idx]
+            title = track.name
+            artist = track.artists[0].name
+            url_name = track.name.gsub(/\s/, '+')
+            url_artist = track.artists[0].name.gsub(/\s/, '+')
 
-          params = {
-            :title => title,
-            :artist => artist,
-            :bucket => 'audio_summary'
-          }
+            params = {
+              :title => title,
+              :artist => artist,
+              :bucket => 'audio_summary'
+            }
 
-          begin
-            response = song.search(params)
-          rescue Echonest::Error
-            # sleep 2
-            next
+            begin
+              response = song.search(params)
+            rescue Echonest::Error
+              # sleep 2
+              next
+            end
+
+            mood = 'Unknown'
+            if response.present?
+              energy = response[0][:audio_summary][:energy]
+              valence = response[0][:audio_summary][:valence]
+              mood = get_mood(valence, energy)
+            end
+
+            data[mood] = data[mood] || []
+            data[mood].push({
+              :title => title,
+              :artist => artist
+            })
+
+            rec = Request.find_by :session_id => request.env["HTTP_COOKIE"]
+            if rec.nil?
+              rec = Request.create :session_id => request.env["HTTP_COOKIE"]
+            end
+            rec.update :data => data
+
+            puts track_idx
+            track_idx += 1
+            session[:progress] += 1
           end
-
-          mood = 'Unknown'
-          if response.present?
-            energy = response[0][:audio_summary][:energy]
-            valence = response[0][:audio_summary][:valence]
-            mood = get_mood(valence, energy)
-          end
-
-          data[mood] = data[mood] || []
-          data[mood].push({
-            :title => title,
-            :artist => artist
-          })
-
-          puts track_idx
-          track_idx += 1
-          session[:progress] += 1
         end
       end
     end
 
-    render json: data
+    render json: {}
   end
 
   def get_my_playlists user_id, playlists
@@ -145,5 +152,13 @@ class PagesController < ApplicationController
     end
 
     mood
+  end
+
+  def status
+    data = {}
+    rec = Request.find_by :session_id => request.env["HTTP_COOKIE"]
+    data = rec.data if rec.present?
+
+    render json: data
   end
 end

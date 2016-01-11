@@ -60,6 +60,7 @@
         });
 
         this.analyzePlaylists();
+        this.pollStatus();
       }
     },
 
@@ -74,6 +75,14 @@
            contentType: 'application/json'
          }
        );
+    },
+
+    pollStatus: function() {
+      setInterval(function() {
+        $.get('/status', function(data) {
+          console.log(data);
+        });
+      }, 5000);
     },
 
     render: function() {

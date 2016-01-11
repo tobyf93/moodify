@@ -24,5 +24,6 @@ module Moodify
     config.active_record.raise_in_transactional_callbacks = true
     RSpotify::authenticate('75ae9a46e92b4925a74619d8eb8e1556', '2c556c74e45347b09bbda2879a0b7a63')
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
+    config.allow_concurrency=true
   end
 end

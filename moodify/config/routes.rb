@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   get '/analyze' => 'pages#analyze'
   post '/analyze' => 'pages#analyze'
   get '/auth/spotify/callback' => 'pages#index'
+  get '/status' => 'pages#status'
 end
