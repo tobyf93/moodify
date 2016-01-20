@@ -125,6 +125,29 @@
 
   var List = React.createClass({
     render: function() {
+      var header = (
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className="btn btn-default" aria-label="Left Align">
+                <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              </button>
+            </div>
+            <b>My Playlists</b>
+            <div className="navbar-header pull-right">
+              <button type="button" className="btn btn-default" aria-label="Left Align">
+                <span className="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <hr />
+        </nav>
+      );
+
+      if (this.props.data.length === 0) {
+        header = '';
+      }
+
       var items = [];
       for (var i = 0; i < this.props.data.length; i++) {
         var boundClick = this.props.onClick.bind(null, i);
@@ -136,9 +159,12 @@
       }
 
       return (
-        <ul className="list-group">
-          {items}
-        </ul>
+        <div>
+          {header}
+          <ul className="list-group">
+            {items}
+          </ul>
+        </div>
       )
     }
   });

@@ -43,8 +43,30 @@ body {
 }
 
 .list-group {
-  margin-top: 25px;
   border-radius: 0;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.navbar-default {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+  margin-top: 20px;
+
+  .btn-default {
+    background-color: #000;
+    border-color: #fff;
+    color: #fff;
+    // border-radius: 20px;
+  }
+
+  .container-fluid {
+    text-align: center;
+    line-height: 33px;
+  }
 }
 
 .list-group-item {
