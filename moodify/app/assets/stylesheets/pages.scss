@@ -44,6 +44,38 @@ body {
 
 .list-group {
   border-radius: 0;
+
+  .excited {
+    color: #ffcf3c;
+  }
+
+  .happy {
+    color: #ffff48;
+  }
+
+  .chilled {
+    color: #3cff3c;
+  }
+
+  .peaceful {
+    color: #06ffff;
+  }
+
+  .bored {
+    color: #1289ff;
+  }
+
+  .depressed {
+    color: #cf3cff;
+  }
+
+  .stressed {
+    color: #ff0cc3;
+  }
+
+  .aggressive {
+    color: #ff0c4a;
+  }
 }
 
 .navbar {
