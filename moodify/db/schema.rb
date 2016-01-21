@@ -11,11 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160111004348) do
 
   create_table "requests", force: :cascade do |t|
     t.text   "data"
     t.string "ip_address"
+=======
+ActiveRecord::Schema.define(version: 20160111025956) do
+
+  create_table "requests", force: :cascade do |t|
+    t.text    "data"
+    t.string  "ip_address"
+    t.boolean "done",       default: false
+>>>>>>> analyze_progress
   end
 
 end

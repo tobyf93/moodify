@@ -7,7 +7,10 @@
         playlist.selected = true;
       });
 
-      return { data: gon.playlists };
+      return {
+        data: gon.playlists,
+        display: 'PLAYLISTS',
+      };
     },
 
     handleListClick: function(index) {
@@ -22,14 +25,23 @@
       this.setState({ data: data });
     },
 
+    handleAnalyzeDone: function(data) {
+      this.setState({
+        data: data,
+        display: 'MOODS'
+      });
+    },
+
     render: function() {
       return (
         <div>
           <Header
-            data={this.state.data}/>
+            data={this.state.data}
+            analyzeDone={this.handleAnalyzeDone}/>
           <List
             data={this.state.data}
-            onClick={this.handleListClick} />
+            onClick={this.handleListClick}
+            display={this.state.display}/>
         </div>
       );
     }
@@ -93,7 +105,10 @@
         this.setState({ songsAnalyzed: count });
         if (this.state.songsAnalyzed < this.state.totalSongs) {
           this.pollStatus();
+        } else {
+          this.props.analyzeDone(data);
         }
+
       }.bind(this));
     },
 
@@ -125,25 +140,59 @@
 
   var List = React.createClass({
     render: function() {
-      var items = [];
-      for (var i = 0; i < this.props.data.length; i++) {
-        var boundClick = this.props.onClick.bind(null, i);
+      var title = this.props.display === 'PLAYLISTS' ? 'My Playlists' : 'Results';
 
-        items.push(<ListItem
-                    key={i}
-                    data={this.props.data[i]}
-                    onClick={boundClick}/>);
+      var header = (
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className="btn btn-default" aria-label="Left Align">
+                <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              </button>
+            </div>
+            <b>{title}</b>
+            <div className="navbar-header pull-right">
+              <button type="button" className="btn btn-default" aria-label="Left Align">
+                <span className="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <hr />
+        </nav>
+      );
+
+      var items = [];
+      if (this.props.display === 'PLAYLISTS') {
+        for (var i = 0; i < this.props.data.length; i++) {
+          var boundClick = this.props.onClick.bind(null, i);
+
+          items.push(<PlaylistItem
+                      key={i}
+                      data={this.props.data[i]}
+                      onClick={boundClick}/>);
+        }
+      } else {
+        for (var mood in this.props.data) {
+          items.push(<MoodItem
+                      key={i}
+                      mood={mood}
+                      data={this.props.data[mood]}
+                      onClick={boundClick}/>);
+        }
       }
 
       return (
-        <ul className="list-group">
-          {items}
-        </ul>
+        <div>
+          {header}
+          <ul className="list-group">
+            {items}
+          </ul>
+        </div>
       )
     }
   });
 
-  var ListItem = React.createClass({
+  var PlaylistItem = React.createClass({
     render: function() {
       var word = this.props.data.total === 1 ? 'track' : 'tracks';
       var icon = 'glyphicon';
@@ -164,9 +213,27 @@
             {this.props.data.total} {word}
           </div>
         </li>
-      )
+      );
     }
-  })
+  });
+
+  var MoodItem = React.createClass({
+    render: function() {
+      var word = this.props.data.total === 1 ? 'track' : 'tracks';
+      var className = 'list-group-item ' + this.props.mood;
+
+      return (
+        <li className={className}
+          key={this.props.key}
+          onClick={this.props.onClick}>
+          <div className="title">
+            {this.props.mood.toUpperCase()}<br />
+            {this.props.data.length} {word}
+          </div>
+        </li>
+      );
+    }
+  });
 
   ReactDOM.render(
     <App />,

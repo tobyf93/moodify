@@ -30,7 +30,6 @@ class PagesController < ApplicationController
       playlists_req.each_with_index do |playlist_req, playlist_idx|
         if playlist_req[:selected] == true
           track_idx = 0
-          puts playlists[playlist_idx].tracks.length
           while track_idx < playlists[playlist_idx].tracks.length do
             # Needs to be moved
             song = Echonest::Song.new('PWBP6ZPNBM8WFOEFT')
@@ -67,18 +66,21 @@ class PagesController < ApplicationController
               :artist => artist
             })
 
-            rec = Request.find_by :ip_address => request.env["HTTP_HOST"]
+            rec = Request.find_by :ip_address => request.remote_ip
             if rec.nil?
-              rec = Request.create :ip_address => request.env["HTTP_HOST"]
+              rec = Request.create :ip_address => request.remote_ip
             end
             rec.update :data => YAML.dump(data)
 
             puts track_idx
             track_idx += 1
-            session[:progress] += 1
           end
         end
       end
+
+      rec = Request.find_by :ip_address => request.remote_ip
+      rec.update :done => true
+      puts 'its done now'
     end
 
     render json: {}
@@ -156,9 +158,12 @@ class PagesController < ApplicationController
 
   def status
     data = {}
-    rec = Request.find_by :ip_address => request.env["HTTP_HOST"]
-    data = YAML.load rec.data if rec.present?
-    # puts request.env["HTTP_ORIGIN"]
+
+    rec = Request.find_by :ip_address => request.remote_ip
+    if rec.present?
+      data = YAML.load rec.data
+      rec.destroy if rec.done?
+    end
 
     render json: data
   end
