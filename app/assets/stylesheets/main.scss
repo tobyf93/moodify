@@ -1,0 +1,90 @@
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+// Colours
+$white: #fff;
+$black: #000;
+$green: #2ebd59;
+$light-green: #42c369;
+$grey: #828282;
+
+html {
+  background-color: $black;
+  color: $white;
+}
+
+body {
+  font-family: 'Varela Round', sans-serif;
+}
+
+hr {
+  border-top-color: $grey;
+}
+
+#app {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+}
+
+#header {
+  margin-bottom: 25px;
+
+  img {
+    height: 150px;
+    margin-bottom: 15px;
+  }
+}
+
+#button {
+  background-color: $green;
+  width: 300px;
+  margin: 0 auto;
+  line-height: 50px;
+  border-radius: 25px;
+}
+
+#button:hover {
+  background-color: $light-green;
+  cursor: pointer;
+}
+
+.list-header {
+  .list-title {
+    line-height: 40px;
+  }
+
+  button {
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    color: $grey;
+    border-color: $grey;
+    border-radius: 50%;
+    opacity: 0.8;
+
+    .dots-icon {
+      line-height: 20px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// BOOTSTRAP OVERRIDES
+body {
+  background-color: transparent;
+  color: inherit;
+}
+
+.navbar-default {
+  background-color: inherit;
+  border-color: transparent;
+}
+
+.btn-default:hover {
+  color: $grey;
+  background-color: inherit;
+  border-color: $grey;
+}
