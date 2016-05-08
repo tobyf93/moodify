@@ -1,6 +1,7 @@
 var express = require('express'),
     serveStatic = require('serve-static'),
-    SpotifyWebApi = require('spotify-web-api-node');
+    SpotifyWebApi = require('spotify-web-api-node'),
+    cookieParser = require('cookie-parser');
 
 module.exports = function(PORT) {
   var app = express();
@@ -10,44 +11,33 @@ module.exports = function(PORT) {
     clientSecret : '2c556c74e45347b09bbda2879a0b7a63',
   });
 
-  app.use(serveStatic(__dirname + '/dist'));
-
-  // Set cookie with playlist info
-  app.get('/test', function(req, res, next) {
+  // Use authCode to retreive accessToken.  Store token in cookie for use in
+  // API calls.
+  app.get('/', function(req, res, next) {
     var authCode = req.query.code;
 
-    // Fetch user information
-    if (authCode) {
-      spotifyApi.authorizationCodeGrant(authCode)
-        .then(function(data) {
-          console.log('Retrieved access token', data.body['access_token']);
+    spotifyApi.authorizationCodeGrant(authCode)
+      .then(function(data) {
+        var accessToken = data.body['access_token'];
 
-          // Set the access token
-          spotifyApi.setAccessToken(data.body['access_token']);
+        res.cookie('accessToken', accessToken);
+        req.accessToken = accessToken;  // Pass accessToken onto next middleware func
+        next();
+      })
+      .catch(function(err) {
+        console.log('ERROR', err.message);
+        next();
+      });
+  });
 
-          // Use the access token to retrieve information about the user connected to it
-          return spotifyApi.getMe();
-        })
-        .then(function(data) {
-          // "Retrieved data for Faruk Sahin"
-          console.log('Retrieved data for ' + data.body['display_name']);
-
-          // "Email is farukemresahin@gmail.com"
-          console.log('Email is ' + data.body.email);
-
-          // "Image URL is http://media.giphy.com/media/Aab07O5PYOmQ/giphy.gif"
-          console.log('Image URL is ' + data.body.images[0].url);
-
-          // "This user has a premium account"
-          console.log('This user has a ' + data.body.product + ' account');
-        })
-        .catch(function(err) {
-          console.log('Something went wrong', err.message);
-        });
-    }
+  app.get('/', function(req, res, next) {
+    var accessToken = req.accessToken;
 
     next();
   });
+
+  app.use(cookieParser());
+  app.use(serveStatic(__dirname + '/dist'));
 
   app.get('/login', function(req, res) {
     var scopes = ['user-read-private', 'user-read-email'];
