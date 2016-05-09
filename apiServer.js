@@ -13,27 +13,37 @@ module.exports = function(PORT) {
 
   // Use authCode to retreive accessToken.  Store token in cookie for use in
   // API calls.
+  // TODO: Probably need better logic in place to determine whether or not
+  // to run through this middleware func.
   app.get('/', function(req, res, next) {
     var authCode = req.query.code;
 
-    spotifyApi.authorizationCodeGrant(authCode)
-      .then(function(data) {
-        var accessToken = data.body['access_token'];
+    if (authCode) {
+      spotifyApi.authorizationCodeGrant(authCode)
+        .then(function(data) {
+          var accessToken = data.body['access_token'];
 
-        res.cookie('accessToken', accessToken);
-        req.accessToken = accessToken;  // Pass accessToken onto next middleware func
-        next();
-      })
-      .catch(function(err) {
-        console.log('ERROR', err.message);
-        next();
-      });
-  });
-
-  app.get('/', function(req, res, next) {
-    var accessToken = req.accessToken;
-
-    next();
+          res.cookie('accessToken', accessToken);
+          spotifyApi.setAccessToken(accessToken);
+          return spotifyApi.getMe();
+        })
+        .then(function(data) {
+          var userID = data.body.id;
+          res.cookie('id', userID);
+          next();
+          // return spotifyApi.getUserPlaylists(userID);
+        })
+        // .then(function(data) {
+        //   console.dir(data.body.items[0]);
+        //   next();
+        // })
+        .catch(function(err) {
+          console.log('ERROR', err.message);
+          next();
+        });
+    } else {
+      next();
+    }
   });
 
   app.use(cookieParser());
