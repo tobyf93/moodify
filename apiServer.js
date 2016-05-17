@@ -44,8 +44,8 @@ module.exports = function(PORT) {
 
     spotifyConnector
       .getUserPlaylists()
-      .then(function(data) {
-        res.send(data);
+      .then(function(playlists) {
+        res.send(JSON.stringify(playlists));
       },
       function(err) {
         res.send(err);
