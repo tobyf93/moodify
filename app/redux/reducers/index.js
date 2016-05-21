@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { hello } from './hello';
+import { playlists } from './playlists';
 
 export default combineReducers({
-  hello
+  playlists
 });
