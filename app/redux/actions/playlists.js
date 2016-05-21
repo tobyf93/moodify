@@ -1,7 +1,8 @@
-export const FETCH_PLAYLIST = 'FETCH_PLAYLIST';
+export const FETCH_PLAYLISTS = 'FETCH_PLAYLISTS';
 
 export function fetchPlaylist() {
-  return dispatch => {
-    dispatch({ type: FETCH_PLAYLIST });
-  }
+  console.log('fetchPlaylist action creator');
+  // return dispatch => {
+  //   dispatch({ type: FETCH_PLAYLISTS });
+  // }
 }

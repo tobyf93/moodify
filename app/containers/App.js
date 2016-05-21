@@ -6,9 +6,7 @@ import * as Actions from '../redux/actions/playlists';
 import Main from '../components/Main';
 
 function mapStateToProps(state) {
-  return {
-    state
-  };
+  return state;
 }
 
 function mapDispatchToProps(dispatch) {

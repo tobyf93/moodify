@@ -9,14 +9,10 @@ export default function Main() {
   return (
     <div>
       <Header
-        // data={this.state.data}
-        // analyzeDone={this.handleAnalyzeDone}
+        userDetails={this.props.userDetails}
+        fetchPlaylists={this.props.fetchPlaylists}
       />
-      <List
-      // data={this.state.data}
-      // onClick={this.handleListClick}
-      // display={this.state.display}
-      />
+      <List />
 
     </div>
   );
