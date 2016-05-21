@@ -5,12 +5,14 @@ import React from 'react';
 import Header from './Header';
 import List from './List';
 
-export default function Main() {
+export default function Main(props) {
+  console.log('Main', props);
+  
   return (
     <div>
       <Header
-        userDetails={this.props.userDetails}
-        fetchPlaylists={this.props.fetchPlaylists}
+        userDetails={props.userDetails}
+        fetchPlaylists={props.fetchPlaylists}
       />
       <List />
 

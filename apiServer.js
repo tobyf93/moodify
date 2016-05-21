@@ -42,6 +42,8 @@ module.exports = function(PORT) {
   app.get('/playlists', function(req, res) {
     var spotifyConnector = new SpotifyConnector(req.cookies);
 
+    // TODO: Need to handle refreshing tokens or wiping userDetails
+    // from state to re-prompt user for login.
     spotifyConnector
       .getUserPlaylists()
       .then(function(playlists) {

@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import reducer from '../reducers';
 
@@ -10,10 +10,10 @@ const logger = createLogger({
   collapsed: true
 });
 
-// const applyStore = applyMiddleware(thunk, logger)(createStore);
-const applyStore = applyMiddleware(logger)(createStore);
+// const applyStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore);
+const applyStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore);
 
 export default function configureStore(state) {
-  const store = applyStore(reducer, state);
+  const store = applyStoreWithMiddleware(reducer, state);
   return store;
 }

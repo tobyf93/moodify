@@ -1,8 +1,11 @@
-export const FETCH_PLAYLISTS = 'FETCH_PLAYLISTS';
+import $ from 'jquery';
 
-export function fetchPlaylist() {
-  console.log('fetchPlaylist action creator');
-  // return dispatch => {
-  //   dispatch({ type: FETCH_PLAYLISTS });
-  // }
+export const ADD_PLAYLISTS = 'ADD_PLAYLISTS';
+
+export function fetchPlaylists() {
+  return dispatch => {
+    $.get('/playlists', function(playlists) {
+      dispatch({ type: ADD_PLAYLISTS, playlists: JSON.parse(playlists) });
+    });
+  }
 }

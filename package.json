@@ -23,6 +23,7 @@
     "cookie-parser": "^1.4.1",
     "express": "4.13.4",
     "history": "2.0.1",
+    "jquery": "^2.2.4",
     "query-string": "^4.1.0",
     "react": "0.14.7",
     "react-dom": "0.14.7",
