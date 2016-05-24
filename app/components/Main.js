@@ -6,15 +6,15 @@ import Header from './Header';
 import List from './List';
 
 export default function Main(props) {
-  console.log('Main', props);
-  
   return (
     <div>
       <Header
         userDetails={props.userDetails}
         fetchPlaylists={props.fetchPlaylists}
       />
-      <List />
+      <List
+        playlists={props.playlists}
+      />
 
     </div>
   );

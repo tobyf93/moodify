@@ -21,12 +21,12 @@ hr {
 }
 
 #app {
-  text-align: center;
   width: 600px;
   margin: 0 auto;
 }
 
 #header {
+  text-align: center;
   margin-bottom: 25px;
 
   img {
@@ -49,6 +49,8 @@ hr {
 }
 
 .list-header {
+  text-align: center;
+  
   .list-title {
     line-height: 40px;
   }
@@ -87,4 +89,8 @@ body {
   color: $grey;
   background-color: inherit;
   border-color: $grey;
+}
+
+.list-group-item {
+  background-color: transparent;
 }

@@ -1,6 +1,26 @@
 import React from 'react';
 
-export default function List() {
+export default function List(props) {
+  let playlists = [];
+
+  props.playlists.forEach(playlist => {
+    playlists.push(
+      <li className="list-group-item">
+        <div className="media">
+          <div className="media-left">
+            <a href="#">
+              <img height="60px" className="media-object" src={playlist.thumbnail.url} alt="..." />
+            </a>
+          </div>
+          <div className="media-body">
+            <h4 className="media-heading">{playlist.name}</h4>
+            <h4 className="media-heading">{playlist.trackCount} Tracks</h4>
+          </div>
+        </div>
+      </li>
+    );
+  });
+
   return (
     <div>
       <nav className="navbar navbar-default">
@@ -21,7 +41,7 @@ export default function List() {
       </nav>
 
       <ul className="list-group">
-        items go here
+        {playlists}
       </ul>
     </div>
   );
