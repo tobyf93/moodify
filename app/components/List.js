@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ListItem from './ListItem';
 
-export default function List(props) {
-  let playlists = [];
+const List = ({ selectPlaylist, playlists }) => {
+  let listItems = [];
 
   function itemClicked(id) {
-    props.selectPlaylist(id);
+    selectPlaylist(id);
   }
 
-  props.playlists.forEach(playlist => {
+  playlists.forEach(playlist => {
     let id = playlist.id;
 
-    playlists.push(
+    listItems.push(
       <ListItem
         key={id}
         itemClicked={itemClicked.bind(this, id)}
         thumbnail={playlist.thumbnail.url}
         title={playlist.name}
         subTitle={playlist.trackCount + ' tracks'}
-      />);
+      />
+    );
   });
 
   return (
@@ -41,8 +42,15 @@ export default function List(props) {
       </nav>
 
       <ul className="list-group">
-        {playlists}
+        {listItems}
       </ul>
     </div>
   );
 }
+
+List.propTypes = {
+  selectPlaylist: PropTypes.func.isRequired,
+  playlists: PropTypes.array.isRequired
+}
+
+export default List;

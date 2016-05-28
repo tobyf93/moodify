@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 // TODO: Can this be done in webpack config?
 let spotifyLogo = require("file!../assets/images/spotify.png");
 
-export default function Header(props) {
+const Header = ({ fetchPlaylists, userDetails }) => {
   const LOGIN = 'LOGIN',
         FETCH = 'FETCH',
         ANALYSE = 'ANALYSE';
 
   function buttonState() {
-    if (props.userDetails.loggedIn) {
+    if (userDetails.loggedIn) {
       return FETCH;
     } else {
       return LOGIN;
@@ -20,7 +20,7 @@ export default function Header(props) {
     if (buttonState() === LOGIN) {
       login();
     } else {
-      props.fetchPlaylists();
+      fetchPlaylists();
     }
   }
 
@@ -41,3 +41,10 @@ export default function Header(props) {
     </div>
   );
 }
+
+Header.propTypes = {
+  fetchPlaylists: PropTypes.func.isRequired,
+  userDetails: PropTypes.object.isRequired
+};
+
+export default Header;
