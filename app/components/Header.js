@@ -4,7 +4,6 @@ import React from 'react';
 let spotifyLogo = require("file!../assets/images/spotify.png");
 
 export default function Header(props) {
-  // TODO: Should i define my constants somewhere else?
   const LOGIN = 'LOGIN',
         FETCH = 'FETCH',
         ANALYSE = 'ANALYSE';

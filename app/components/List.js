@@ -1,24 +1,24 @@
 import React from 'react';
+import ListItem from './ListItem';
 
 export default function List(props) {
   let playlists = [];
 
+  function itemClicked(id) {
+    props.selectPlaylist(id);
+  }
+
   props.playlists.forEach(playlist => {
+    let id = playlist.id;
+
     playlists.push(
-      <li className="list-group-item">
-        <div className="media">
-          <div className="media-left">
-            <a href="#">
-              <img height="60px" className="media-object" src={playlist.thumbnail.url} alt="..." />
-            </a>
-          </div>
-          <div className="media-body">
-            <h4 className="media-heading">{playlist.name}</h4>
-            <h4 className="media-heading">{playlist.trackCount} Tracks</h4>
-          </div>
-        </div>
-      </li>
-    );
+      <ListItem
+        key={id}
+        itemClicked={itemClicked.bind(this, id)}
+        thumbnail={playlist.thumbnail.url}
+        title={playlist.name}
+        subTitle={playlist.trackCount + ' tracks'}
+      />);
   });
 
   return (

@@ -9,10 +9,11 @@ export default function Main(props) {
   return (
     <div>
       <Header
+        fetchPlaylists={props.actions.fetchPlaylists}
         userDetails={props.userDetails}
-        fetchPlaylists={props.fetchPlaylists}
       />
       <List
+        selectPlaylist={props.actions.selectPlaylist}
         playlists={props.playlists}
       />
 
