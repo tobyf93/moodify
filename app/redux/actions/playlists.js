@@ -5,7 +5,7 @@ export const TOGGLE_PLAYLIST = 'TOGGLE_PLAYLIST';
 
 export function fetchPlaylists() {
   return dispatch => {
-    $.get('/playlists', function(playlists) {
+    $.get('/playlists', (playlists) => {
       dispatch({ type: ADD_PLAYLISTS, playlists: JSON.parse(playlists) });
     });
   }

@@ -4,12 +4,12 @@ import ListItem from './ListItem';
 const List = ({ togglePlaylist, playlists }) => {
   let listItems = [];
 
-  function itemClicked(id) {
+  const itemClicked = (id) => {
     togglePlaylist(id);
   }
 
   playlists.forEach(playlist => {
-    let id = playlist.id;
+    const id = playlist.id;
 
     listItems.push(
       <ListItem

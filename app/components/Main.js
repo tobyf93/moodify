@@ -5,7 +5,7 @@ import React from 'react';
 import Header from './Header';
 import List from './List';
 
-export default function Main(props) {
+const Main = (props) => {
   return (
     <div>
       <Header
@@ -20,3 +20,5 @@ export default function Main(props) {
     </div>
   );
 }
+
+export default Main;

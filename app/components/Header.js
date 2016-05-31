@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 // TODO: Can this be done in webpack config?
-let spotifyLogo = require("file!../assets/images/spotify.png");
+const spotifyLogo = require("file!../assets/images/spotify.png");
 
 const Header = ({ fetchPlaylists, userDetails, playlists }) => {
   function login() {
