@@ -11,12 +11,12 @@ export default function Main(props) {
       <Header
         fetchPlaylists={props.actions.fetchPlaylists}
         userDetails={props.userDetails}
+        playlists={props.playlists}
       />
       <List
         togglePlaylist={props.actions.togglePlaylist}
         playlists={props.playlists}
       />
-
     </div>
   );
 }

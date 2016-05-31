@@ -3,32 +3,30 @@ import React, { PropTypes } from 'react';
 // TODO: Can this be done in webpack config?
 let spotifyLogo = require("file!../assets/images/spotify.png");
 
-const Header = ({ fetchPlaylists, userDetails }) => {
-  const LOGIN = 'LOGIN',
-        FETCH = 'FETCH',
-        ANALYSE = 'ANALYSE';
-
-  function buttonState() {
-    if (userDetails.loggedIn) {
-      return FETCH;
-    } else {
-      return LOGIN;
-    }
-  }
-
-  function onClick() {
-    if (buttonState() === LOGIN) {
-      login();
-    } else {
-      fetchPlaylists();
-    }
-  }
-
+const Header = ({ fetchPlaylists, userDetails, playlists }) => {
   function login() {
     window.location = '/login';
   }
 
-  let buttonText = (buttonState() === LOGIN ? 'Login' : 'Fetch Playlists');
+  function onClick() {
+    if (!userDetails.loggedIn) {
+      login();
+    } else if (!playlists.length) {
+      fetchPlaylists();
+    } else {
+      // analysePlaylists();
+    }
+  }
+
+  function buttonText() {
+    if (!userDetails.loggedIn) {
+      return 'Login';
+    } else if (!playlists.length) {
+      return 'Fetch Playlists';
+    } else {
+      return 'Analyse ' + playlists.length + ' Playlists';
+    }
+  }
 
   return (
     <div id="header">
@@ -36,7 +34,7 @@ const Header = ({ fetchPlaylists, userDetails }) => {
       <img src={spotifyLogo} />
       <div  id="button"
             onClick={onClick}>
-        {buttonText}
+        {buttonText()}
       </div>
     </div>
   );
@@ -44,7 +42,8 @@ const Header = ({ fetchPlaylists, userDetails }) => {
 
 Header.propTypes = {
   fetchPlaylists: PropTypes.func.isRequired,
-  userDetails: PropTypes.object.isRequired
+  userDetails: PropTypes.object.isRequired,
+  playlists: PropTypes.array.isRequired
 };
 
 export default Header;
