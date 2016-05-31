@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 export const ADD_PLAYLISTS = 'ADD_PLAYLISTS';
-export const SELECT_PLAYLIST = 'SELECT_PLAYLIST';
+export const TOGGLE_PLAYLIST = 'TOGGLE_PLAYLIST';
 
 export function fetchPlaylists() {
   return dispatch => {
@@ -11,6 +11,6 @@ export function fetchPlaylists() {
   }
 }
 
-export function selectPlaylist(id) {
-  return { type: SELECT_PLAYLIST, id };
+export function togglePlaylist(id) {
+  return { type: TOGGLE_PLAYLIST, id };
 }

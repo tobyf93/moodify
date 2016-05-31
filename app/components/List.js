@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import ListItem from './ListItem';
 
-const List = ({ selectPlaylist, playlists }) => {
+const List = ({ togglePlaylist, playlists }) => {
   let listItems = [];
 
   function itemClicked(id) {
-    selectPlaylist(id);
+    togglePlaylist(id);
   }
 
   playlists.forEach(playlist => {
@@ -15,6 +15,7 @@ const List = ({ selectPlaylist, playlists }) => {
       <ListItem
         key={id}
         itemClicked={itemClicked.bind(this, id)}
+        selected={playlist.selected}
         thumbnail={playlist.thumbnail.url}
         title={playlist.name}
         subTitle={playlist.trackCount + ' tracks'}
@@ -49,7 +50,7 @@ const List = ({ selectPlaylist, playlists }) => {
 }
 
 List.propTypes = {
-  selectPlaylist: PropTypes.func.isRequired,
+  togglePlaylist: PropTypes.func.isRequired,
   playlists: PropTypes.array.isRequired
 }
 

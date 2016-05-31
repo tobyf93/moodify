@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const ListItem = ({ itemClicked, thumbnail, title, subTitle }) => {
+const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
   return (
     <li onClick={itemClicked}
         className="list-group-item">
@@ -9,7 +9,7 @@ const ListItem = ({ itemClicked, thumbnail, title, subTitle }) => {
           <img height="60px" className="media-object" src={thumbnail} alt="..." />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{title}</h4>
+          <h4 className="media-heading">{title} {selected ? '*' : ''}</h4>
           <h4 className="media-heading">{subTitle}</h4>
         </div>
       </div>

@@ -13,7 +13,7 @@ export default function Main(props) {
         userDetails={props.userDetails}
       />
       <List
-        selectPlaylist={props.actions.selectPlaylist}
+        togglePlaylist={props.actions.togglePlaylist}
         playlists={props.playlists}
       />
 

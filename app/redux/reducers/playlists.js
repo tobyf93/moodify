@@ -1,11 +1,11 @@
-import { ADD_PLAYLISTS, SELECT_PLAYLIST } from '../actions/playlists';
+import { ADD_PLAYLISTS, TOGGLE_PLAYLIST } from '../actions/playlists';
 
 export function playlists(playlists = [], action) {
   switch (action.type) {
     case ADD_PLAYLISTS:
       return [...action.playlists];
       break;
-    case SELECT_PLAYLIST:
+    case TOGGLE_PLAYLIST:
       return selectPlaylist(playlists, action.id);
       break;
     default:
@@ -20,7 +20,7 @@ const selectPlaylist = (prevPlaylists, id) => {
     let playlist = playlists[i];
 
     if (playlist.id === id) {
-      playlist.selected = true;
+      playlist.selected = !playlist.selected;
       break;
     }
   }
