@@ -8,24 +8,16 @@ const Header = ({ fetchPlaylists, userDetails, playlists }) => {
     window.location = '/login';
   }
 
-  function onClick() {
-    if (!userDetails.loggedIn) {
-      login();
-    } else if (!playlists.length) {
-      fetchPlaylists();
-    } else {
-      // analysePlaylists();
-    }
-  }
-
-  function buttonText() {
-    if (!userDetails.loggedIn) {
-      return 'Login';
-    } else if (!playlists.length) {
-      return 'Fetch Playlists';
-    } else {
-      return 'Analyse ' + playlists.length + ' Playlists';
-    }
+  let button = {};
+  if (!userDetails.loggedIn) {
+    button.text = 'Login';
+    button.action = login;
+  } else if (!playlists.length) {
+    button.text = 'Fetch Playlists';
+    button.action = fetchPlaylists;
+  } else {
+    button.text = 'Analyse Playlists';
+    // button.action = analysePlaylists;
   }
 
   return (
@@ -33,8 +25,8 @@ const Header = ({ fetchPlaylists, userDetails, playlists }) => {
       <h1>Moodify</h1>
       <img src={spotifyLogo} />
       <div  id="button"
-            onClick={onClick}>
-        {buttonText()}
+            onClick={button.action}>
+        {button.text}
       </div>
     </div>
   );
