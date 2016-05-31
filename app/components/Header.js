@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 
 // TODO: Can this be done in webpack config?
-let spotifyLogo = require("file!../assets/images/spotify.png");
+const spotifyLogo = require("file!../assets/images/spotify.png");
 
 const Header = ({ fetchPlaylists, userDetails }) => {
   const LOGIN = 'LOGIN',
         FETCH = 'FETCH',
         ANALYSE = 'ANALYSE';
 
-  function buttonState() {
+  const buttonState = () => {
     if (userDetails.loggedIn) {
       return FETCH;
     } else {
@@ -16,7 +16,7 @@ const Header = ({ fetchPlaylists, userDetails }) => {
     }
   }
 
-  function onClick() {
+  const onClick = () => {
     if (buttonState() === LOGIN) {
       login();
     } else {
@@ -24,11 +24,11 @@ const Header = ({ fetchPlaylists, userDetails }) => {
     }
   }
 
-  function login() {
+  const login = () => {
     window.location = '/login';
   }
 
-  let buttonText = (buttonState() === LOGIN ? 'Login' : 'Fetch Playlists');
+  const buttonText = (buttonState() === LOGIN ? 'Login' : 'Fetch Playlists');
 
   return (
     <div id="header">

@@ -5,11 +5,10 @@ import * as playlistActions from '../redux/actions/playlists';
 
 import Main from '../components/Main';
 
-function mapStateToProps(state) {
-  return state;
-}
+// TODO: This is bad shit
+const mapStateToProps = (state) => state
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(playlistActions, dispatch)
   }

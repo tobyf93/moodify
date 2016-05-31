@@ -1,6 +1,6 @@
 var cookie = require('cookie');
 
-let initialState = function() {
+const initialState = () => {
   let parsedCookie = cookie.parse(document.cookie);
 
   return {
