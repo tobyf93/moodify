@@ -8,6 +8,11 @@ const Header = ({ fetchPlaylists, userDetails, playlists }) => {
     window.location = '/login';
   }
 
+  const selectedPlaylists = playlists.filter(playlist => {
+    return playlist.selected;
+  }).length;
+
+  // TODO: Create a property in the state tree to use in a switch statement
   let button = {};
   if (!userDetails.loggedIn) {
     button.text = 'Login';
@@ -16,7 +21,7 @@ const Header = ({ fetchPlaylists, userDetails, playlists }) => {
     button.text = 'Fetch Playlists';
     button.action = fetchPlaylists;
   } else {
-    button.text = 'Analyse Playlists';
+    button.text = 'Analyse ' + selectedPlaylists + ' Playlists';
     // button.action = analysePlaylists;
   }
 
