@@ -13,7 +13,7 @@ const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
         </div>
       </div>
       <div className="list-item-icon">
-        &gt;
+        <i className="fa fa-chevron-right" aria-hidden="true"></i>
       </div>
     </div>
   );
