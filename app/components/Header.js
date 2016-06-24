@@ -3,14 +3,14 @@ import React, { PropTypes } from 'react';
 // TODO: Can this be done in webpack config?
 const spotifyLogo = require("file!../assets/images/spotify.png");
 
-const Header = ({ fetchPlaylists, userDetails, playlists }) => {
+const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) => {
   function login() {
     window.location = '/login';
   }
 
   const selectedPlaylists = playlists.filter(playlist => {
     return playlist.selected;
-  }).length;
+  });
 
   // TODO: Create a property in the state tree to use in a switch statement
   let button = {};
@@ -21,8 +21,10 @@ const Header = ({ fetchPlaylists, userDetails, playlists }) => {
     button.text = 'Fetch Playlists';
     button.action = fetchPlaylists;
   } else {
-    button.text = 'Analyse ' + selectedPlaylists + ' Playlists';
-    // button.action = analysePlaylists;
+    button.text = 'Analyse ' + selectedPlaylists.length + ' Playlists';
+    button.action = () => {
+      analysePlaylists(selectedPlaylists);
+    }
   }
 
   return (

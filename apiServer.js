@@ -1,7 +1,7 @@
 var express = require('express'),
     serveStatic = require('serve-static'),
-    SpotifyWebApi = require('spotify-web-api-node'),
     cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
     SpotifyConnector = require('./lib/SpotifyConnector');
 
 module.exports = function(PORT) {
@@ -9,9 +9,8 @@ module.exports = function(PORT) {
 
   // Middleware
   app.use(cookieParser())
+     .use(bodyParser.json())
      .use(serveStatic(__dirname + '/dist'));
-
-
 
   app.get('/login', function(req, res) {
     var config = {
@@ -24,7 +23,8 @@ module.exports = function(PORT) {
   });
 
   app.get('/callback', function(req, res) {
-    var spotifyConnector = new SpotifyConnector(req.query);
+    const config = req.query;
+    var spotifyConnector = new SpotifyConnector(config);
 
     spotifyConnector
       .authenticate()
@@ -40,7 +40,8 @@ module.exports = function(PORT) {
   });
 
   app.get('/playlists', function(req, res) {
-    var spotifyConnector = new SpotifyConnector(req.cookies);
+    const config = req.cookies;
+    var spotifyConnector = new SpotifyConnector(config);
 
     // TODO: Need to handle refreshing tokens or wiping userDetails
     // from state to re-prompt user for login.
@@ -52,6 +53,28 @@ module.exports = function(PORT) {
       function(err) {
         res.send(err);
       });
+  });
+
+  app.post('/moods', (req, res) => {
+    const playlists = req.body;
+    const config = req.cookies;
+    var spotifyConnector = new SpotifyConnector(config);
+    spotifyConnector.getPlaylistTracks(playlists[0])
+      .then((data) => {
+        // playlistItem is a wrapper around track
+        const playlistItems = data.body.items;
+        playlistItems.forEach((playlistItem) => {
+          const track = playlistItem.track;
+          const name = track.name;
+          const artists = track.artists.map((artist) => artist.name).join(', ');
+          console.log(name, 'by', artists);
+        })
+
+        res.send(data.body.items[0].track);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   });
 
   app.listen(PORT);

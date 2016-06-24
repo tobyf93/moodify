@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/peturh/webpack-dev-api-server#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "cookie": "^0.2.4",
     "cookie-parser": "^1.4.1",
     "express": "4.13.4",

@@ -10,6 +10,7 @@ const Main = (props) => {
     <div>
       <Header
         fetchPlaylists={props.actions.fetchPlaylists}
+        analysePlaylists={props.actions.analysePlaylists}
         userDetails={props.userDetails}
         playlists={props.playlists}
       />

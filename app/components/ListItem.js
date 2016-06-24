@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 
 const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
-
-
   return (
     <div onClick={itemClicked} className="list-item">
       <div className="list-item-thumbnail">
