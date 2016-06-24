@@ -14,6 +14,7 @@ html {
 
 body {
   font-family: 'Varela Round', sans-serif;
+  font-size: 16px;
 }
 
 hr {
@@ -22,6 +23,7 @@ hr {
 
 #app {
   width: 600px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -48,49 +50,55 @@ hr {
   cursor: pointer;
 }
 
-.list-header {
-  text-align: center;
-  
-  .list-title {
-    line-height: 40px;
+.list {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.list-item {
+  display: flex;
+  padding: 5px 15px 5px 5px;
+}
+
+.list-item:hover {
+  background-color: #2a2a2a;
+  cursor: pointer;
+}
+
+.list-item:not(:last-child) {
+  border-bottom: 0.5px solid #434343;
+}
+
+.list-item-thumbnail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 10px;
+
+  img {
+    height: 64px;
+    width: 64px;
   }
-
-  button {
-    height: 40px;
-    width: 40px;
-    background-color: transparent;
-    color: $grey;
-    border-color: $grey;
-    border-radius: 50%;
-    opacity: 0.8;
-
-    .dots-icon {
-      line-height: 20px;
-    }
-
-    &:hover {
-      opacity: 1;
-    }
-  }
 }
 
-// BOOTSTRAP OVERRIDES
-body {
-  background-color: transparent;
-  color: inherit;
+.list-item-desc {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
 }
 
-.navbar-default {
-  background-color: inherit;
-  border-color: transparent;
+.list-item-title {
+  font-size: 1.2em;
 }
 
-.btn-default:hover {
-  color: $grey;
-  background-color: inherit;
-  border-color: $grey;
+.list-item-sub-title {
+  color: #828282;
 }
 
-.list-group-item {
-  background-color: transparent;
+.list-item-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
 }

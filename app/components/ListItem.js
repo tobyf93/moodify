@@ -1,19 +1,23 @@
 import React, { PropTypes } from 'react';
 
 const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
+
+
   return (
-    <li onClick={itemClicked}
-        className="list-group-item">
-      <div className="media">
-        <div className="media-left">
-          <img height="60px" className="media-object" src={thumbnail} alt="..." />
-        </div>
-        <div className="media-body">
-          <h4 className="media-heading">{title} {selected ? '*' : ''}</h4>
-          <h4 className="media-heading">{subTitle}</h4>
+    <div onClick={itemClicked} className="list-item">
+      <div className="list-item-thumbnail">
+        <img src={thumbnail} />
+      </div>
+      <div className="list-item-desc">
+        <div className="list-item-titles">
+          <div className="list-item-title">{title} {selected ? '*' : ''}</div>
+          <div className="list-item-sub-title">{subTitle}</div>
         </div>
       </div>
-    </li>
+      <div className="list-item-icon">
+        &gt;
+      </div>
+    </div>
   );
 }
 

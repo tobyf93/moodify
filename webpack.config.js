@@ -11,7 +11,6 @@ module.exports = {
   module: {
     loaders: [
       {
-        // Transpile javascript
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel',
@@ -30,7 +29,6 @@ module.exports = {
         loader: 'file?name=[name].[ext]',
       },
       {
-        // Preprocess SCSS
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass']
       }
