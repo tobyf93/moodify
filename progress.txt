@@ -1,0 +1,29 @@
+TODO:
+- Re-implement the echonest API used in the old rails app
+- Figure out how to process tracks in batches.  Look into how catalogs work.
+- May need to do one batch for each playlist as we need to know what playlist a
+  track belongs to.
+- Re-implement mood logic from rails app
+- Return data to client:
+[
+  {
+    id: "abc123",
+    tracks: [
+      {
+        title: "I Miss You",
+        artists: "Blink 182",
+        mood: "sad"
+      }
+    ]
+  }
+]
+
+24/6/2016:
+- No longer using Bootstrap (not needed).  Instead using flexbox for application
+  layout.  This has >90% browser support which i am more than happy with.
+- Create analysePlaylists action in redux to send an array of playlist ID's to
+  server.
+- API server uses bodyParser to parse incoming JSON data to '/moods' route.
+- getPlaylistTracks method called from the Spotify API to get tracks for each
+  playlist.  Unfortunately i don't think there is a way of getting tracks for
+  more than one playlist at a time.
