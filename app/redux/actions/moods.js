@@ -16,8 +16,9 @@ export function analysePlaylists(playlists) {
       dataType: 'json',
       contentType: 'application/json',
       success: (data) => {
-        dispatch({ type: ADD_TRACKS, moods: JSON.parse(data.tracks) });
-        dispatch({ type: ADD_MOODS, moods: JSON.parse(data.moods) });
+        console.log(data);
+        // dispatch({ type: ADD_TRACKS, moods: JSON.parse(data.tracks) });
+        // dispatch({ type: ADD_MOODS, moods: JSON.parse(data.moods) });
       }
     });
   }

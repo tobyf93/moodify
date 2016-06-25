@@ -50,31 +50,31 @@ module.exports = function(PORT) {
       .then(function(playlists) {
         res.send(JSON.stringify(playlists));
       },
-      function(err) {
-        res.send(err);
+      function(error) {
+        res.send(error);
       });
   });
 
+  // TODO: Only doing first playlist
   app.post('/moods', (req, res) => {
-    const playlists = req.body;
+    const playlistIDs = req.body;
+    const playlistID = playlistIDs[0];
     const config = req.cookies;
     var spotifyConnector = new SpotifyConnector(config);
-    spotifyConnector.getPlaylistTracks(playlists[0])
-      .then((data) => {
-        // playlistItem is a wrapper around track
-        const playlistItems = data.body.items;
-        playlistItems.forEach((playlistItem) => {
-          const track = playlistItem.track;
-          const name = track.name;
-          const artists = track.artists.map((artist) => artist.name).join(', ');
-          console.log(name, 'by', artists);
-        })
 
-        res.send(data.body.items[0].track);
+    spotifyConnector
+      .getPlaylistTracks(playlistID)
+      .then((tracks) => {
+        res.send(JSON.stringify([
+          {
+            id: playlistID,
+            tracks: tracks
+          }
+        ]));
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch((error) => {
+        res.send(error);
+      });
   });
 
   app.listen(PORT);

@@ -1,8 +1,4 @@
 TODO:
-- Re-implement the echonest API used in the old rails app
-- Figure out how to process tracks in batches.  Look into how catalogs work.
-- May need to do one batch for each playlist as we need to know what playlist a
-  track belongs to.
 - Re-implement mood logic from rails app
 - Return data to client:
 [
@@ -17,6 +13,18 @@ TODO:
     ]
   }
 ]
+
+26/6/2016:
+- Using Spotify's /v1/audio-features endpoint to get track energy and valence.
+  This is not included in the spotify-web-api-node library so it might be worth
+  contributing to that.
+- Currently only analysing first 20 tracks of first playlist.  Will need to
+  revisit how to chain promises together in a for loop.
+
+25/6/2016:
+- Spotify now has an audio features endpoint that returns energy and valence.
+  Weird thing is you have to pass in track ID's via a url param.  URL's have a
+  length limit so i'm going to batch 20 tracks at a time.
 
 24/6/2016:
 - No longer using Bootstrap (not needed).  Instead using flexbox for application
