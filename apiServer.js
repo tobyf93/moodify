@@ -4,7 +4,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     SpotifyConnector = require('./lib/SpotifyConnector');
 
-module.exports = function(PORT) {
+module.exports = (PORT) => {
   var app = express();
 
   // Middleware
@@ -12,7 +12,7 @@ module.exports = function(PORT) {
      .use(bodyParser.json())
      .use(serveStatic(__dirname + '/dist'));
 
-  app.get('/login', function(req, res) {
+  app.get('/login', (req, res) => {
     var config = {
       scopes: ['user-read-private', 'user-read-email']
     };
@@ -22,24 +22,25 @@ module.exports = function(PORT) {
     res.redirect(authorizeURL);
   });
 
-  app.get('/callback', function(req, res) {
+  app.get('/callback', (req, res) => {
     const config = req.query;
     var spotifyConnector = new SpotifyConnector(config);
 
     spotifyConnector
       .authenticate()
-      .then(function(data) {
+      .then((data) => {
         res.cookie('accessToken', data.accessToken);
         res.cookie('refreshToken', data.refreshToken);
         res.cookie('userID', data.userID);
         res.redirect('/');
-      },
-      function(err) {
+      })
+      .catch((error) => {
+        console.log(error);
         res.redirect('/#invalid_auth_code');
       });
   });
 
-  app.get('/playlists', function(req, res) {
+  app.get('/playlists', (req, res) => {
     const config = req.cookies;
     var spotifyConnector = new SpotifyConnector(config);
 
@@ -47,12 +48,13 @@ module.exports = function(PORT) {
     // from state to re-prompt user for login.
     spotifyConnector
       .getUserPlaylists()
-      .then(function(playlists) {
+      .then((playlists) => {
         res.send(JSON.stringify(playlists));
-      },
-      function(error) {
+      })
+      .catch((error) => {
+        console.log(error);
         res.send(error);
-      });
+      })
   });
 
   // TODO: Only doing first playlist
@@ -73,6 +75,7 @@ module.exports = function(PORT) {
         ]));
       })
       .catch((error) => {
+        console.log(error);
         res.send(error);
       });
   });
