@@ -14,6 +14,10 @@ TODO:
   }
 ]
 
+29/6/2016:
+- Moods working with limited number of tracks
+- Need a way of accessing tracks array in getPlaylistTracks AND getAudioFeatures
+
 26/6/2016:
 - Using Spotify's /v1/audio-features endpoint to get track energy and valence.
   This is not included in the spotify-web-api-node library so it might be worth
