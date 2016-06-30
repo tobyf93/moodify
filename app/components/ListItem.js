@@ -1,19 +1,29 @@
 import React, { PropTypes } from 'react';
 
 const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
+  let listItemClass = 'list-item ';
+  let iconClass = 'fa ';
+
+  if (selected) {
+    listItemClass += 'selected';
+    iconClass += 'fa-check-circle-o tick-icon'
+  } else {
+    iconClass += 'fa-times-circle-o'
+  }
+
   return (
-    <div onClick={itemClicked} className="list-item">
+    <div onClick={itemClicked} className={listItemClass}>
       <div className="list-item-thumbnail">
         <img src={thumbnail} />
       </div>
       <div className="list-item-desc">
         <div className="list-item-titles">
-          <div className="list-item-title">{title} {selected ? '*' : ''}</div>
+          <div className="list-item-title">{title}</div>
           <div className="list-item-sub-title">{subTitle}</div>
         </div>
       </div>
       <div className="list-item-icon">
-        <i className="fa fa-times-circle-o check-cross-icon" aria-hidden="true"></i>
+        <i className={iconClass} aria-hidden="true"></i>
       </div>
     </div>
   );
