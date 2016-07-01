@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
 
-// TODO: Can this be done in webpack config?
-const spotifyLogo = require("file!../assets/images/spotify.png");
-
 const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) => {
   function login() {
     window.location = '/login';
@@ -30,7 +27,7 @@ const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) =>
   return (
     <div id="header">
       <h1>Moodify</h1>
-      <img src={spotifyLogo} />
+      <i className="fa fa-spotify logo" aria-hidden="true"></i>
       <div  id="button"
             onClick={button.action}>
         {button.text}

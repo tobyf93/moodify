@@ -66,9 +66,12 @@ module.exports = (PORT) => {
 
     spotifyConnector
       .getPlaylistTracks(playlistID)
-      .then((data) => {
-        console.log(data);
-        res.send(data);
+      .then((tracks) => {
+        // TODO: Quick hack
+        var playlists = {};
+        playlists[playlistID] = tracks;
+
+        res.send(JSON.stringify(playlists));
       })
       .catch((error) => {
         console.log(error);
