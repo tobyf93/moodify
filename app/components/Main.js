@@ -9,6 +9,7 @@ const Main = (props) => {
   return (
     <div>
       <Header
+        derivedState={props.derivedState}
         fetchPlaylists={props.actions.fetchPlaylists}
         analysePlaylists={props.actions.analysePlaylists}
         userDetails={props.userDetails}

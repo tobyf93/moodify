@@ -30,7 +30,6 @@ export function analysePlaylists(playlists) {
       dataType: 'json',
       contentType: 'application/json',
       success: (data) => {
-        console.log(data);
         dispatch({ type: ADD_TRACKS, playlists: data });
         // dispatch({ type: ADD_MOODS, moods: JSON.parse(data.moods) });
       }

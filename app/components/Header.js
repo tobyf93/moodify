@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
+import { derivedStates } from '../selectors';
 
-const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) => {
+const Header = ({ derivedState, fetchPlaylists, analysePlaylists, userDetails, playlists }) => {
   function login() {
     window.location = '/login';
   }
@@ -9,19 +10,22 @@ const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) =>
     return playlist.selected;
   });
 
-  // TODO: Create a property in the state tree to use in a switch statement
   let button = {};
-  if (!userDetails.loggedIn) {
-    button.text = 'Login';
-    button.action = login;
-  } else if (!playlists.length) {
-    button.text = 'Fetch Playlists';
-    button.action = fetchPlaylists;
-  } else {
-    button.text = 'Analyse ' + selectedPlaylists.length + ' Playlists';
-    button.action = () => {
-      analysePlaylists(selectedPlaylists);
-    }
+  switch (derivedState) {
+    case derivedStates.LOGIN:
+      button.text = 'Login';
+      button.action = login;
+      break;
+    case derivedStates.FETCH:
+      button.text = 'Fetch Playlists';
+      button.action = fetchPlaylists;
+      break;
+    case derivedStates.ANALYSE:
+      button.text = 'Analyse ' + selectedPlaylists.length + ' Playlists';
+      button.action = () => {
+        analysePlaylists(selectedPlaylists);
+      }
+      break;
   }
 
   return (
@@ -37,6 +41,7 @@ const Header = ({ fetchPlaylists, analysePlaylists, userDetails, playlists }) =>
 }
 
 Header.propTypes = {
+  derivedState: PropTypes.string.isRequired,
   fetchPlaylists: PropTypes.func.isRequired,
   userDetails: PropTypes.object.isRequired,
   playlists: PropTypes.array.isRequired

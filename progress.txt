@@ -1,18 +1,12 @@
 TODO:
-- Re-implement mood logic from rails app
-- Return data to client:
-[
-  {
-    id: "abc123",
-    tracks: [
-      {
-        title: "I Miss You",
-        artists: "Blink 182",
-        mood: "sad"
-      }
-    ]
-  }
-]
+- Implement API/Spotify logic using generators
+- Return playlists from /moods endpoint in array instead of object with playlistID
+  as key
+- Use a selector to derive moods from analysed playlists 
+
+1/7/2016:
+- Successfully processing the FIRST playlist sent to server
+- Using reselect to calculate a derivedState to be used across the app
 
 29/6/2016:
 - Moods working with limited number of tracks
