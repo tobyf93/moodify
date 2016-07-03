@@ -35,8 +35,9 @@
     "redux-logger": "2.6.1",
     "redux-thunk": "2.0.1",
     "request-promise": "3.0.0",
-    "reselect": "^2.5.1",
+    "reselect": "2.5.1",
     "serve-static": "1.10.2",
+    "spotify-web-api-js": "0.19.2",
     "spotify-web-api-node": "2.3.0"
   },
   "devDependencies": {

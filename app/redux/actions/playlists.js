@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { ADD_MOODS } from './moods';
+import SpotifyConnector from '../../SpotifyConnector';
 
 export const ADD_PLAYLISTS = 'ADD_PLAYLISTS';
 export const ADD_TRACKS = 'ADD_TRACKS';
@@ -7,8 +8,10 @@ export const TOGGLE_PLAYLIST = 'TOGGLE_PLAYLIST';
 
 export function fetchPlaylists() {
   return dispatch => {
-    $.get('/playlists', playlists => {
-      dispatch({ type: ADD_PLAYLISTS, playlists: JSON.parse(playlists) });
+    let spotifyConnector = new SpotifyConnector();
+    
+    spotifyConnector.getUserPlaylists().then((playlists) => {
+      dispatch({ type: ADD_PLAYLISTS, playlists });
     });
   }
 }

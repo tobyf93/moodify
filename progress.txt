@@ -1,8 +1,12 @@
 TODO:
+- Use spotify web api
 - Implement API/Spotify logic using generators
 - Return playlists from /moods endpoint in array instead of object with playlistID
   as key
-- Use a selector to derive moods from analysed playlists 
+- Use a selector to derive moods from analysed playlists
+- Instead of returning playlists with tracks lets return moods with tracks, linked
+  back to playlist
+
 
 1/7/2016:
 - Successfully processing the FIRST playlist sent to server
