@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import { ADD_MOODS } from './moods';
-import SpotifyConnector from '../../SpotifyConnector';
+import SpotifyConnector from '../../lib/SpotifyConnector';
 
 export const ADD_PLAYLISTS = 'ADD_PLAYLISTS';
 export const ADD_TRACKS = 'ADD_TRACKS';
@@ -8,8 +8,8 @@ export const TOGGLE_PLAYLIST = 'TOGGLE_PLAYLIST';
 
 export function fetchPlaylists() {
   return dispatch => {
-    let spotifyConnector = new SpotifyConnector();
-    
+    const spotifyConnector = new SpotifyConnector();
+
     spotifyConnector.getUserPlaylists().then((playlists) => {
       dispatch({ type: ADD_PLAYLISTS, playlists });
     });
@@ -21,21 +21,12 @@ export function togglePlaylist(id) {
 }
 
 export function analysePlaylists(playlists) {
+  const spotifyConnector = new SpotifyConnector();
   const playlistIDs = playlists.map((playlist) => {
     return playlist.id;
   });
 
   return dispatch => {
-    $.ajax({
-      type: "POST",
-      url: '/moods',
-      data: JSON.stringify(playlistIDs),
-      dataType: 'json',
-      contentType: 'application/json',
-      success: (data) => {
-        dispatch({ type: ADD_TRACKS, playlists: data });
-        // dispatch({ type: ADD_MOODS, moods: JSON.parse(data.moods) });
-      }
-    });
+    spotifyConnector.getMoods(playlistIDs);
   }
 }

@@ -1,7 +1,7 @@
 module.exports = {
   context: __dirname + '/app',
   entry: {
-    javascript: './app.js',
+    javascript: ['babel-polyfill', './app.js'],
     html: './index.html'
   },
   output: {
