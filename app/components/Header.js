@@ -26,6 +26,9 @@ const Header = ({ derivedState, fetchPlaylists, analysePlaylists, userDetails, p
         analysePlaylists(selectedPlaylists);
       }
       break;
+    case derivedStates.MOODS:
+      button.text = 'great success';
+      break;
   }
 
   return (

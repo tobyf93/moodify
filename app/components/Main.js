@@ -3,9 +3,26 @@ require('../assets/stylesheets/main.scss');
 
 import React from 'react';
 import Header from './Header';
-import List from './List';
+import PlaylistList from './PlaylistList';
+import { derivedStates } from '../selectors';
+import MoodList from './MoodList';
 
 const Main = (props) => {
+  let list = [];
+
+  if (props.derivedState === derivedStates.ANALYSE) {
+    list = (
+      <PlaylistList
+        togglePlaylist={props.actions.togglePlaylist}
+        playlists={props.playlists}
+      />
+    );
+  } else if (props.derivedState === derivedStates.MOODS) {
+    list = (
+      <MoodList tracksByMood={props.moods} />
+    );
+  }
+
   return (
     <div>
       <Header
@@ -15,10 +32,7 @@ const Main = (props) => {
         userDetails={props.userDetails}
         playlists={props.playlists}
       />
-      <List
-        togglePlaylist={props.actions.togglePlaylist}
-        playlists={props.playlists}
-      />
+      {list}
     </div>
   );
 }

@@ -84,11 +84,22 @@ hr {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 64px;
+  width: 64px;
   margin-right: 10px;
+  text-align: center;
+  font-size: 2em;
+
+  &.mood {
+    height: 60px;
+    width: 60px;
+    border: 2px solid white;
+    color: white;
+  }
 
   img {
-    height: 64px;
-    width: 64px;
+    height: 100%;
+    width: 100%;
   }
 }
 

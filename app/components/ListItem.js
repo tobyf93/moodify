@@ -1,29 +1,17 @@
 import React, { PropTypes } from 'react';
 
-const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
-  let listItemClass = 'list-item ';
-  let iconClass = 'fa ';
-
-  if (selected) {
-    listItemClass += 'selected';
-    iconClass += 'fa-check-circle-o tick-icon'
-  } else {
-    iconClass += 'fa-times-circle-o'
-  }
-
+const ListItem = (props) => {
   return (
-    <div onClick={itemClicked} className={listItemClass}>
-      <div className="list-item-thumbnail">
-        <img src={thumbnail} />
-      </div>
+    <div onClick={props.itemClicked} className={props.listItemClass}>
+      {props.thumbnail}
       <div className="list-item-desc">
         <div className="list-item-titles">
-          <div className="list-item-title">{title}</div>
-          <div className="list-item-sub-title">{subTitle}</div>
+          <div className="list-item-title">{props.title}</div>
+          <div className="list-item-sub-title">{props.subTitle}</div>
         </div>
       </div>
       <div className="list-item-icon">
-        <i className={iconClass} aria-hidden="true"></i>
+        <i className={props.iconClass} aria-hidden="true"></i>
       </div>
     </div>
   );
@@ -31,7 +19,7 @@ const ListItem = ({ itemClicked, selected, thumbnail, title, subTitle }) => {
 
 ListItem.propTypes = {
   itemClicked: PropTypes.func.isRequired,
-  thumbnail: PropTypes.string.isRequired,
+  thumbnail: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired
 }

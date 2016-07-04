@@ -7,7 +7,6 @@ import { getDerivedState } from '../selectors';
 
 import Main from '../components/Main';
 
-// TODO: This is bad shit
 const mapStateToProps = (state) => {
   return {
     ...state,
