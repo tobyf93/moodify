@@ -1,12 +1,20 @@
 TODO:
-- Use spotify web api
-- Implement API/Spotify logic using generators
-- Return playlists from /moods endpoint in array instead of object with playlistID
-  as key
-- Use a selector to derive moods from analysed playlists
-- Instead of returning playlists with tracks lets return moods with tracks, linked
-  back to playlist
+- Look into using react router to navigate between pages instead of having logic
+  in multiple components that decide what to show and not show.
+- Refactor components to use classes.  At the moment i'm finding components a bit
+  hard to follow.
 
+5/7/2016:
+- Now using Spotify's web API instead of making calls from backend.  This makes
+  processing quicker as it only has to do one jump to the Spotify endpoints instead
+  of two.  Also means we can avoid the Express server queuing requests as requests
+  are now done by clients.
+- Using co-routines, generators and promises to make async code easier to follow
+- Displaying a moods list with number of tracks from each mood shown.  Thinking of
+  making this list expandable (to view individual tracks) rather than making a
+  separate tracks list.
+- List item component is now more generic so that it can be used with both playlist
+  list and mood list.
 
 1/7/2016:
 - Successfully processing the FIRST playlist sent to server
