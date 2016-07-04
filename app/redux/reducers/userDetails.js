@@ -8,6 +8,6 @@ const initialState = () => {
   };
 }
 
-export function userDetails(state = initialState(), action) {
+export default function userDetails(state = initialState(), action) {
   return state;
 }

@@ -1,7 +1,7 @@
 import { ADD_PLAYLISTS, TOGGLE_PLAYLIST, ADD_TRACKS } from '../actions/playlists';
 
 // TODO: fix up all these args, they can get confusing...
-export function playlists(state = [], action) {
+export default function playlists(state = [], action) {
   switch (action.type) {
     case ADD_PLAYLISTS:
       return [...action.playlists];
