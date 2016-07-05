@@ -1,40 +1,50 @@
 // TODO: Find a way of including this in index.html
 require('../assets/stylesheets/main.scss');
 
-import React from 'react';
+import React, { Component } from 'react';
 import Header from './Header';
 import PlaylistList from './PlaylistList';
 import { derivedStates } from '../selectors';
 import MoodList from './MoodList';
 
-const Main = (props) => {
-  let list = [];
-
-  if (props.derivedState === derivedStates.ANALYSE) {
-    list = (
-      <PlaylistList
-        togglePlaylist={props.actions.togglePlaylist}
-        playlists={props.playlists}
-      />
-    );
-  } else if (props.derivedState === derivedStates.MOODS) {
-    list = (
-      <MoodList tracksByMood={props.moods} />
-    );
+class Main extends Component {
+  constructor(props) {
+    super(props);
   }
 
-  return (
-    <div>
-      <Header
-        derivedState={props.derivedState}
-        fetchPlaylists={props.actions.fetchPlaylists}
-        analysePlaylists={props.actions.analysePlaylists}
-        userDetails={props.userDetails}
-        playlists={props.playlists}
-      />
-      {list}
-    </div>
-  );
+  getList() {
+    let list = [];
+
+    if (this.props.derivedState === derivedStates.ANALYSE) {
+      list = (
+        <PlaylistList
+          togglePlaylist={this.props.actions.togglePlaylist}
+          playlists={this.props.playlists}
+        />
+      );
+    } else if (this.props.derivedState === derivedStates.MOODS) {
+      list = (
+        <MoodList tracksByMood={this.props.moods} />
+      );
+    }
+
+    return list;
+  }
+
+  render() {
+    return (
+      <div>
+        <Header
+          derivedState={this.props.derivedState}
+          fetchPlaylists={this.props.actions.fetchPlaylists}
+          analysePlaylists={this.props.actions.analysePlaylists}
+          userDetails={this.props.userDetails}
+          playlists={this.props.playlists}
+        />
+        {this.getList()}
+      </div>
+    );
+  }
 }
 
 export default Main;

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import * as playlistActions from '../redux/actions/playlists';
 import * as moodActions from '../redux/actions/moods';
 import { getDerivedState } from '../selectors';
-
 import Main from '../components/Main';
 
 const mapStateToProps = (state) => {
