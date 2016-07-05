@@ -9,10 +9,11 @@ const MoodList = ({ tracksByMood }) => {
   }
 
   for (let mood in tracksByMood) {
-    console.log(mood);
     let tracks = tracksByMood[mood];
+    let moodClass = `list-item-thumbnail mood ${mood}`;
+
     let thumbnail = (
-      <div className="list-item-thumbnail mood">
+      <div className={moodClass}>
         {mood[0]}
       </div>
     );

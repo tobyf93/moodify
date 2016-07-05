@@ -33,7 +33,7 @@ const Header = ({ derivedState, fetchPlaylists, analysePlaylists, userDetails, p
 
   return (
     <div id="header">
-      <h1>Moodify</h1>
+      <div id="brandName">Moodify</div>
       <i className="fa fa-spotify logo" aria-hidden="true"></i>
       <div  id="button"
             onClick={button.action}>
