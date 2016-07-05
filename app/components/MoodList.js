@@ -34,6 +34,18 @@ class MoodList extends Component {
           iconClass="fa fa-chevron-down chevron-icon"
         />
       );
+
+      tracks.forEach((track) => {
+        listItems.push(
+          <ListItem
+            key={track.id}
+            listItemClass="list-item"
+            itemClicked={this.itemClicked.bind(this)}
+            title={track.name}
+            subTitle={track.artists}
+          />
+        );
+      });
     }
 
     return listItems;
