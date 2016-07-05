@@ -22,7 +22,7 @@ class List extends Component {
         listItemClass += 'selected';
         iconClass += 'fa-check-circle-o tick-icon'
       } else {
-        iconClass += 'fa-times-circle-o'
+        iconClass += 'fa-times-circle-o cross-icon'
       }
 
       let thumbnail = (

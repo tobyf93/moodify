@@ -32,7 +32,7 @@ class Header extends Component {
         }
         break;
       case derivedStates.MOODS:
-        button.text = 'great success';
+        button.text = 'Back To Playlists';
         break;
     }
 

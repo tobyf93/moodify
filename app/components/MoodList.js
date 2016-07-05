@@ -31,7 +31,7 @@ class MoodList extends Component {
           thumbnail={thumbnail}
           title={mood}
           subTitle={tracks.length + ' tracks'}
-          iconClass="fa fa-check-circle-o tick-icon"
+          iconClass="fa fa-chevron-down chevron-icon"
         />
       );
     }
