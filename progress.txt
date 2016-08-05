@@ -1,8 +1,11 @@
 TODO:
+- Refactor components to use classes.  At the moment i'm finding components a bit
+hard to follow.  Is this in a branch already?
 - Look into using react router to navigate between pages instead of having logic
   in multiple components that decide what to show and not show.
-- Refactor components to use classes.  At the moment i'm finding components a bit
-  hard to follow.
+
+5/8/2016:
+- Introducing routes (all stubbed currently)
 
 5/7/2016:
 - Now using Spotify's web API instead of making calls from backend.  This makes

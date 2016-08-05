@@ -1,15 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import configureStore from './redux/store';
-import routes from './routes';
+import App from './containers/App';
 
 const targetEl = document.getElementById('app');
 const store = configureStore();
 
+// Stubs
+var Login = App;
+var Fetch = App;
+var Playlists = App;
+var Moods = App;
+
 ReactDOM.render((
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes(store)} />
+    <Router history={browserHistory}>
+      <Route path='/' component={App}>
+        <IndexRoute component={Login} />
+        <Route path='fetch' component={Fetch} />
+        <Route path='playlists' component={Playlists} />
+        <Route path='moods' component={Moods} />
+      </Route>
+    </Router>
   </Provider>
 ), targetEl);
