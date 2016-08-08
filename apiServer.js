@@ -29,13 +29,13 @@ module.exports = (PORT) => {
     spotifyConnector
       .authenticate()
       .then((data) => {
-        res.cookie('accessToken', data.accessToken);
-        res.cookie('refreshToken', data.refreshToken);
-        res.cookie('userID', data.userID);
+        const expires = new Date(Date.now() + data.expiresIn);
+        res.cookie('accessToken', data.accessToken, { expires });
+        res.cookie('refreshToken', data.refreshToken, { expires });
+        res.cookie('userID', data.userID, { expires });
         res.redirect('/');
       })
       .catch((error) => {
-        console.log(error);
         res.redirect('/#invalid_auth_code');
       });
   });
@@ -52,7 +52,6 @@ module.exports = (PORT) => {
         res.send(JSON.stringify(playlists));
       })
       .catch((error) => {
-        console.log(error);
         res.send(error);
       })
   });
@@ -74,7 +73,6 @@ module.exports = (PORT) => {
         res.send(JSON.stringify(playlists));
       })
       .catch((error) => {
-        console.log(error);
         res.send(error);
       });
   });

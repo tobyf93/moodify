@@ -1,6 +1,6 @@
 const Spotify = require('spotify-web-api-js'),
       cookie = require('cookie'),
-      Promise = require("bluebird"),
+      co = require('co'),
       getMood = require('./moods');
 
 function SpotifyConnector() {
@@ -39,7 +39,7 @@ SpotifyConnector.prototype.getUserPlaylists = function() {
 SpotifyConnector.prototype.getMoods = function(playlistIDs) {
   const that = this;
 
-  return Promise.coroutine(function*() {
+  return co(function*() {
     let tracks = {};
 
     // Get tracks
@@ -74,7 +74,7 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
     });
 
     return moods;
-  })();
+  });
 }
 
 export default SpotifyConnector;
