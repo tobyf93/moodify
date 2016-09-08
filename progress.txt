@@ -1,8 +1,15 @@
 TODO:
-- Refactor components to use classes.  At the moment i'm finding components a bit
-hard to follow.  Is this in a branch already?
 - Look into using react router to navigate between pages instead of having logic
   in multiple components that decide what to show and not show.
+- Create 'pages' that use reusable components and use constructor to determine whether this is the correct route the user should be on.
+
+using Node 4.4.6
+
+8/9/2016:
+- Got caught out by browserHistory and my backend.  By default webpack doesn't allow
+traffic that hasn't been explicitly allowed e.g. localhost:3000/fetch, one of our
+react-router routes.  This was solved by allowing all * GET requests to hit our index.html 
+
 
 5/8/2016:
 - Introducing routes (all stubbed currently)

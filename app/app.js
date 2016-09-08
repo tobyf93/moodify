@@ -10,9 +10,16 @@ const store = configureStore();
 
 // Stubs
 var Login = App;
-var Fetch = App;
 var Playlists = App;
 var Moods = App;
+
+const Fetch = () => {
+  return (<div>this is fetch</div>);
+}
+
+const NotFound = () => {
+  return (<div>hello</div>);
+}
 
 ReactDOM.render((
   <Provider store={store}>
@@ -22,6 +29,7 @@ ReactDOM.render((
         <Route path='fetch' component={Fetch} />
         <Route path='playlists' component={Playlists} />
         <Route path='moods' component={Moods} />
+        <Route path='*' component={NotFound} />
       </Route>
     </Router>
   </Provider>

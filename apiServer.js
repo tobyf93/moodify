@@ -4,13 +4,13 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     SpotifyConnector = require('./lib/SpotifyConnector');
 
-module.exports = (PORT) => {
+module.exports = (PORT, PROD) => {
   var app = express();
 
   // Middleware
   app.use(cookieParser())
-     .use(bodyParser.json())
-     .use(serveStatic(__dirname + '/dist'));
+     .use(bodyParser.json());
+    //  .use(serveStatic(__dirname + '/dist'));
 
   app.get('/login', (req, res) => {
     var config = {
@@ -75,6 +75,15 @@ module.exports = (PORT) => {
       .catch((error) => {
         res.send(error);
       });
+  });
+
+  // Allows all other traffic to hit index.html and be handled by react-router
+  app.get('*', (req, res) => {
+    if (PROD) {
+      res.sendFile(__dirname + '/dist/index.html');
+    } else {
+      res.sendFile(__dirname + '/app/index.html');
+    }
   });
 
   app.listen(PORT);

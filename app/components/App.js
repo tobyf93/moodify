@@ -2,10 +2,10 @@
 require('../assets/stylesheets/main.scss');
 
 import React, { Component } from 'react';
-import Header from './Header';
-import PlaylistList from './PlaylistList';
+import Header from '../components/Header';
+import PlaylistList from '../components/PlaylistList';
 import { derivedStates } from '../selectors';
-import MoodList from './MoodList';
+import MoodList from '../components/MoodList';
 
 class Main extends Component {
   constructor(props) {
@@ -42,6 +42,7 @@ class Main extends Component {
           playlists={this.props.playlists}
         />
         {this.getList()}
+        {this.props.children}
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as playlistActions from '../redux/actions/playlists';
 import * as moodActions from '../redux/actions/moods';
 import { getDerivedState } from '../selectors';
-import Main from '../components/Main';
+import App from '../components/App';
 
 const mapStateToProps = (state) => {
   return {
@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
