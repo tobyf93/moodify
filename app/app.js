@@ -7,15 +7,13 @@ import Main from './components/Main';
 import Login from './containers/Login';
 import Fetch from './containers/Fetch';
 import Playlists from './containers/Playlists';
+import MoodList from './containers/MoodList';
 
 const targetEl = document.getElementById('app');
 const store = configureStore();
 
-// Stubs
-var Moods = Main;
-
 const NotFound = () => {
-  return (<div>hello</div>);
+  return (<div>Page not found</div>);
 }
 
 ReactDOM.render((
@@ -25,7 +23,7 @@ ReactDOM.render((
         <IndexRoute component={Login} />
         <Route path='fetch' component={Fetch} />
         <Route path='playlists' component={Playlists} />
-        <Route path='moods' component={Moods} />
+        <Route path='moods' component={MoodList} />
         <Route path='*' component={NotFound} />
       </Route>
     </Router>

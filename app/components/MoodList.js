@@ -60,9 +60,4 @@ class MoodList extends Component {
   }
 }
 
-// MoodList.propTypes = {
-  // togglePlaylist: PropTypes.func.isRequired,
-  // playlists: PropTypes.array.isRequired
-// }
-
 export default MoodList;
