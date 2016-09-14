@@ -31,17 +31,22 @@ class Main extends Component {
     return list;
   }
 
+  // <Header
+  //   derivedState={this.props.derivedState}
+  //   fetchPlaylists={this.props.actions.fetchPlaylists}
+  //   analysePlaylists={this.props.actions.analysePlaylists}
+  //   userDetails={this.props.userDetails}
+  //   playlists={this.props.playlists}
+  // />
+  // {this.getList()}
+
   render() {
     return (
       <div>
-        <Header
-          derivedState={this.props.derivedState}
-          fetchPlaylists={this.props.actions.fetchPlaylists}
-          analysePlaylists={this.props.actions.analysePlaylists}
-          userDetails={this.props.userDetails}
-          playlists={this.props.playlists}
-        />
-        {this.getList()}
+        <div id="header">
+          <div id="brandName">Moodify</div>
+          <i className="fa fa-spotify logo" aria-hidden="true"></i>
+        </div>
         {this.props.children}
       </div>
     );

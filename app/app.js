@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import configureStore from './redux/store';
-import App from './containers/App';
+import Main from './components/Main';
+import Login from './containers/Login';
 
 const targetEl = document.getElementById('app');
 const store = configureStore();
 
 // Stubs
-var Login = App;
-var Playlists = App;
-var Moods = App;
+var Playlists = Main;
+var Moods = Main;
 
 const Fetch = () => {
   return (<div>this is fetch</div>);
@@ -24,7 +24,7 @@ const NotFound = () => {
 ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path='/' component={App}>
+      <Route path='/' component={Main}>
         <IndexRoute component={Login} />
         <Route path='fetch' component={Fetch} />
         <Route path='playlists' component={Playlists} />

@@ -43,13 +43,13 @@ class Header extends Component {
       </div>
     );
   }
-
+  
+// {this.getButton()}
   render() {
     return (
       <div id="header">
         <div id="brandName">Moodify</div>
         <i className="fa fa-spotify logo" aria-hidden="true"></i>
-        {this.getButton()}
       </div>
     );
   }
