@@ -15,7 +15,7 @@ const ListItem = (props) => {
       </div>
     </div>
   );
-}
+};
 
 ListItem.propTypes = {
   itemClicked: PropTypes.func.isRequired,

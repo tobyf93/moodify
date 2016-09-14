@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { ADD_MOODS } from './moods';
 import SpotifyConnector from '../../lib/SpotifyConnector';
+import { hashHistory } from 'react-router';
 
 export const ADD_PLAYLISTS = 'ADD_PLAYLISTS';
 export const ADD_TRACKS = 'ADD_TRACKS';
@@ -12,6 +13,7 @@ export function fetchPlaylists() {
 
     spotifyConnector.getUserPlaylists().then((playlists) => {
       dispatch({ type: ADD_PLAYLISTS, playlists });
+      hashHistory.push('/playlists');
     });
   }
 }

@@ -1,9 +1,20 @@
-import React, { Component, PropTypes } from 'react';
-import ListItem from './ListItem';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
+import * as actions from '../redux/actions/playlists';
+import { bindActionCreators } from 'redux';
+import ListItem from '../components/ListItem';
+import BigButton from '../components/BigButton';
 
-class List extends Component {
+class Playlists extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    if (!this.props.playlists.length) {
+      hashHistory.push('/');
+    }
   }
 
   itemClicked(id) {
@@ -50,10 +61,21 @@ class List extends Component {
   render() {
     return (
       <div className="list">
+        <BigButton
+          text="something"
+        />
         {this.getListItems()}
       </div>
     );
   }
 }
 
-export default List;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Playlists);

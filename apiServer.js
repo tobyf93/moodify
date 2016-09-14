@@ -32,7 +32,7 @@ module.exports = (PORT) => {
         res.cookie('accessToken', data.accessToken, { expires });
         res.cookie('refreshToken', data.refreshToken, { expires });
         res.cookie('userID', data.userID, { expires });
-        res.redirect('/');
+        res.redirect('/#fetch');
       })
       .catch((error) => {
         res.redirect('/#invalid_auth_code');

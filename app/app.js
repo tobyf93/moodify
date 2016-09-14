@@ -5,17 +5,14 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import configureStore from './redux/store';
 import Main from './components/Main';
 import Login from './containers/Login';
+import Fetch from './containers/Fetch';
+import Playlists from './containers/Playlists';
 
 const targetEl = document.getElementById('app');
 const store = configureStore();
 
 // Stubs
-var Playlists = Main;
 var Moods = Main;
-
-const Fetch = () => {
-  return (<div>this is fetch</div>);
-}
 
 const NotFound = () => {
   return (<div>hello</div>);
