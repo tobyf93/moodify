@@ -32,6 +32,7 @@ export function analysePlaylists(playlists) {
   return dispatch => {
     spotifyConnector.getMoods(playlistIDs).then((moods) => {
       dispatch({ type: ADD_MOODS, moods });
+      hashHistory.push('/moods');
     });
   }
 }
