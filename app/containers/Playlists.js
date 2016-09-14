@@ -11,12 +11,6 @@ class Playlists extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    if (!this.props.playlists.length) {
-      hashHistory.push('/');
-    }
-  }
-
   itemClicked(id) {
     this.props.togglePlaylist(id);
   }

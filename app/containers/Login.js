@@ -8,12 +8,6 @@ class Login extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    if (this.props.userDetails.loggedIn) {
-      hashHistory.push('/fetch');
-    }
-  }
-
   login() {
     window.location = '/login';
   }
