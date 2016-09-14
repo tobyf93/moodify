@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import configureStore from './redux/store';
 import Main from './components/Main';
 import Login from './containers/Login';
@@ -23,7 +23,7 @@ const NotFound = () => {
 
 ReactDOM.render((
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route path='/' component={Main}>
         <IndexRoute component={Login} />
         <Route path='fetch' component={Fetch} />
