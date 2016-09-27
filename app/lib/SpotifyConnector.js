@@ -36,6 +36,10 @@ SpotifyConnector.prototype.getUserPlaylists = function() {
   return new Promise(promiseImp);
 }
 
+SpotifyConnector.prototype.getPlaylistTracks = function(userID, playlistID) {
+
+}
+
 SpotifyConnector.prototype.getMoods = function(playlistIDs) {
   const that = this;
 
@@ -47,10 +51,10 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
       let playlistID = playlistIDs[i];
       const playlist = yield that.api.getPlaylistTracks(that.userID, playlistID);
 
+      console.log('tracks', playlist.items.length);
       // Save all tracks from playlist, indexed by ID for quicker access later
       playlist.items.forEach((playlistItem) => {
         tracks[playlistItem.track.id] = {
-          id: playlistItem.track.id,   // TODO: id used here twice
           playlistID,
           name: playlistItem.track.name,
           artists: playlistItem.track.artists.map((artist) => artist.name).join(', ')

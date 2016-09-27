@@ -1,6 +1,7 @@
 using Node 4.4.6
 
 TODO:
+- Fix playlists limit (100)
 - Add toggle for showing moodlist or track list
 - Implement co routines into fetch playlists
 - Get rid of playlists that aren't owned by user.  Cannot fetch these...
