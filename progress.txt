@@ -1,10 +1,14 @@
-TODO:
-- Look into using react router to navigate between pages instead of having logic
-  in multiple components that decide what to show and not show.
-- Create 'pages' that use reusable components and use constructor to determine whether this is the correct route the user should be on.
-- Have Main as a dumb component that houses smart components for each route
-
 using Node 4.4.6
+
+TODO:
+- Add toggle for showing moodlist or track list
+- Implement co routines into fetch playlists
+- Get rid of playlists that aren't owned by user.  Cannot fetch these...
+
+27/9/2016:
+- Implemented onEnter blocks for each route to ensure we have the correct state
+before rendering containers.
+- Remove unwanted code from SpotifyConnector (server-side)
 
 8/9/2016:
 - Got caught out by browserHistory and my backend.  By default webpack doesn't allow

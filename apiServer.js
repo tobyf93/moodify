@@ -2,7 +2,8 @@ var express = require('express'),
     serveStatic = require('serve-static'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    SpotifyConnector = require('./lib/SpotifyConnector');
+    SpotifyConnector = require('./lib/SpotifyConnector'),
+    co = require('co');
 
 module.exports = (PORT) => {
   var app = express();
@@ -43,8 +44,6 @@ module.exports = (PORT) => {
     const config = req.cookies;
     var spotifyConnector = new SpotifyConnector(config);
 
-    // TODO: Need to handle refreshing tokens or wiping userDetails
-    // from state to re-prompt user for login.
     spotifyConnector
       .getUserPlaylists()
       .then((playlists) => {
@@ -62,9 +61,18 @@ module.exports = (PORT) => {
     const config = req.cookies;
     var spotifyConnector = new SpotifyConnector(config);
 
+    // co(function* () {
+    //   playlistIDs.forEach((playlistID) => {
+    //     let tracks = yield spotifyConnector.getPlaylistTracks(playlistID);
+    //     console.log('tracks', tracks);
+    //   });
+    // });
+
     spotifyConnector
       .getPlaylistTracks(playlistID)
       .then((tracks) => {
+        console.log('tracks', tracks);
+
         // TODO: Quick hack
         var playlists = {};
         playlists[playlistID] = tracks;
