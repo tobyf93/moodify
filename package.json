@@ -39,7 +39,9 @@
     "request-promise": "3.0.0",
     "reselect": "2.5.1",
     "spotify-web-api-js": "0.19.2",
-    "spotify-web-api-node": "2.3.0"
+    "spotify-web-api-node": "2.3.0",
+    "webpack": "1.13.0",
+    "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
     "babel-core": "6.7.2",
@@ -52,8 +54,6 @@
     "file-loader": "0.8.5",
     "node-sass": "3.6.0",
     "sass-loader": "3.2.0",
-    "style-loader": "0.13.1",
-    "webpack": "1.13.0",
-    "webpack-dev-server": "1.14.1"
+    "style-loader": "0.13.1"
   }
 }
