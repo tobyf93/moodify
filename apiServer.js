@@ -13,8 +13,12 @@ module.exports = (PORT) => {
      .use(express.static('dist'));
 
   app.get('/login', (req, res) => {
+    var redirectUri = req.protocol + '://' + req.hostname + '/callback';
+    redirectUri = redirectUri.replace('localhost', 'localhost:3000');
+
     var config = {
-      scopes: ['user-read-private', 'user-read-email']
+      scopes: ['user-read-private', 'user-read-email'],
+      redirectUri: redirectUri
     };
 
     var spotifyConnector = new SpotifyConnector(config);
@@ -71,8 +75,6 @@ module.exports = (PORT) => {
     spotifyConnector
       .getPlaylistTracks(playlistID)
       .then((tracks) => {
-        console.log('tracks', tracks);
-
         // TODO: Quick hack
         var playlists = {};
         playlists[playlistID] = tracks;

@@ -6,10 +6,10 @@ of the API server to serve them when in prod mode (serve-static).
 TODO:
 MVP:
 - Fix playlists limit (100)
-- Get rid of playlists that aren't owned by user.  Cannot fetch these...  possibly
-redirect on error
 - Disable 'Analyze' button if none are selected
 - Add back button to moods
+- Fix playlists from different artists.  will need to have the correct userID available
+for request
 
 NICE:
 - Add toggle for showing moodlist or track list

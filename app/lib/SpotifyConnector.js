@@ -51,7 +51,6 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
       let playlistID = playlistIDs[i];
       const playlist = yield that.api.getPlaylistTracks(that.userID, playlistID);
 
-      console.log('tracks', playlist.items.length);
       // Save all tracks from playlist, indexed by ID for quicker access later
       playlist.items.forEach((playlistItem) => {
         tracks[playlistItem.track.id] = {

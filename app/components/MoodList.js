@@ -7,7 +7,6 @@ class MoodList extends Component {
   }
 
   itemClicked() {
-    console.log('mood clicked');
   }
 
   getListItems() {

@@ -50,7 +50,6 @@ class MoodList extends Component {
       });
     }
 
-    console.log(listItems);
     return listItems;
   }
 

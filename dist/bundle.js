@@ -44777,7 +44777,6 @@
 	                      playlist = _context.sent;
 
 
-	                      console.log('tracks', playlist.items.length);
 	                      // Save all tracks from playlist, indexed by ID for quicker access later
 	                      playlist.items.forEach(function (playlistItem) {
 	                        tracks[playlistItem.track.id] = {
@@ -44789,7 +44788,7 @@
 	                        };
 	                      });
 
-	                    case 6:
+	                    case 5:
 	                    case 'end':
 	                      return _context.stop();
 	                  }
@@ -46905,9 +46904,7 @@
 
 	  _createClass(MoodList, [{
 	    key: 'itemClicked',
-	    value: function itemClicked() {
-	      console.log('mood clicked');
-	    }
+	    value: function itemClicked() {}
 	  }, {
 	    key: 'getListItems',
 	    value: function getListItems() {
@@ -64560,7 +64557,6 @@
 	        });
 	      }
 
-	      console.log(listItems);
 	      return listItems;
 	    }
 	  }, {
