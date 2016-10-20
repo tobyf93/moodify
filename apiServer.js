@@ -1,5 +1,4 @@
 var express = require('express'),
-    serveStatic = require('serve-static'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     SpotifyConnector = require('./lib/SpotifyConnector'),
@@ -10,7 +9,8 @@ module.exports = (PORT) => {
 
   // Middleware
   app.use(cookieParser())
-     .use(bodyParser.json());
+     .use(bodyParser.json())
+     .use(express.static('dist'));
 
   app.get('/login', (req, res) => {
     var config = {

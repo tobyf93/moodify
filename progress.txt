@@ -1,10 +1,19 @@
-using Node 4.4.6
+NOTES:
+- using Node 4.4.6
+- Webpack dev server will serve up any files that are in bundle.  It is only the job
+of the API server to serve them when in prod mode (serve-static).
 
 TODO:
+MVP:
 - Fix playlists limit (100)
+- Get rid of playlists that aren't owned by user.  Cannot fetch these...  possibly
+redirect on error
+- Disable 'Analyze' button if none are selected
+- Add back button to moods
+
+NICE:
 - Add toggle for showing moodlist or track list
 - Implement co routines into fetch playlists
-- Get rid of playlists that aren't owned by user.  Cannot fetch these...
 
 27/9/2016:
 - Implemented onEnter blocks for each route to ensure we have the correct state

@@ -1,5 +1,5 @@
-var appServer = require("./webpackServer");
-var apiServer = require("./apiserver");
+var appServer = require("./appServer");
+var apiServer = require("./apiServer");
 var PORT = process.env.PORT || 3000;
 var PROD = process.env.NODE_ENV === "prod";
 
