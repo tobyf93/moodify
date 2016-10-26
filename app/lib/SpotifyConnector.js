@@ -49,10 +49,20 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
     // Get tracks
     for (let i in playlistIDs) {
       let playlistID = playlistIDs[i];
-      const playlist = yield that.api.getPlaylistTracks(that.userID, playlistID);
+
+      // Get tracks in batches
+      let playlist = [];
+      for (let offset = 0;; offset += 100) {
+        const batch = yield that.api.getPlaylistTracks(that.userID, playlistID, { offset: offset });
+        playlist = [...playlist, ...batch.items];
+
+        if (!batch.next) {
+          break;
+        }
+      }
 
       // Save all tracks from playlist, indexed by ID for quicker access later
-      playlist.items.forEach((playlistItem) => {
+      playlist.forEach((playlistItem) => {
         tracks[playlistItem.track.id] = {
           playlistID,
           name: playlistItem.track.name,
@@ -65,16 +75,25 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
     // object with tracks.
     let moods = {};
     const trackIDs = Object.keys(tracks);
-    const audioFeatures = (yield that.api.getAudioFeaturesForTracks(trackIDs)).audio_features;
-    audioFeatures.forEach((audioFeature) => {
-      let track = tracks[audioFeature.id];
-      let valence = audioFeature.valence;
-      let energy = audioFeature.energy;
-      let mood = getMood(valence, energy);
+    const batchSize = 100;
+    for (let offset = 0;; offset += batchSize) {
+      const batchTrackIDs = trackIDs.slice(offset, offset + batchSize);
 
-      moods[mood] = moods[mood] || [];
-      moods[mood].push(track);
-    });
+      if (!batchTrackIDs.length) {
+        break;
+      }
+
+      const audioFeatures = (yield that.api.getAudioFeaturesForTracks(batchTrackIDs)).audio_features;
+      audioFeatures.forEach((audioFeature) => {
+        let track = tracks[audioFeature.id];
+        let valence = audioFeature.valence;
+        let energy = audioFeature.energy;
+        let mood = getMood(valence, energy);
+
+        moods[mood] = moods[mood] || [];
+        moods[mood].push(track);
+      });
+    }
 
     return moods;
   });

@@ -5,7 +5,7 @@ of the API server to serve them when in prod mode (serve-static).
 
 TODO:
 MVP:
-- https://kinesiscem.files.wordpress.com/2015/09/moods.jpg
+* https://kinesiscem.files.wordpress.com/2015/09/moods.jpg
 - Fix playlists limit (100)
 - Disable 'Analyze' button if none are selected
 - Add back button to moods
