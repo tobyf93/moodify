@@ -27,7 +27,10 @@ module.exports = (PORT) => {
   });
 
   app.get('/callback', (req, res) => {
+    var redirectUri = req.protocol + '://' + req.hostname + '/callback';
+    redirectUri = redirectUri.replace('localhost', 'localhost:3000');
     const config = req.query;
+    config.redirectUri = redirectUri;
     var spotifyConnector = new SpotifyConnector(config);
 
     spotifyConnector
