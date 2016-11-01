@@ -61,6 +61,10 @@ SpotifyConnector.prototype.getMoods = function(playlists) {
 
       // Save all tracks from playlist, indexed by ID for quicker access later
       playlist.forEach((playlistItem) => {
+        if (!playlistItem.track) {
+          return;
+        }
+
         tracks[playlistItem.track.id] = {
           playlistID,
           name: playlistItem.track.name,
