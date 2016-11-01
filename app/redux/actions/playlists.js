@@ -25,12 +25,8 @@ export function togglePlaylist(id) {
 export function analysePlaylists(playlists) {
   const spotifyConnector = new SpotifyConnector();
 
-  const playlistIDs = playlists.map((playlist) => {
-    return playlist.id;
-  });
-
   return dispatch => {
-    spotifyConnector.getMoods(playlistIDs).then((moods) => {
+    spotifyConnector.getMoods(playlists).then((moods) => {
       dispatch({ type: ADD_MOODS, moods });
       hashHistory.push('/moods');
     });

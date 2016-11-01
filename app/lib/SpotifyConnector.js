@@ -22,7 +22,8 @@ SpotifyConnector.prototype.getUserPlaylists = function() {
         selected: false,
         thumbnail: playlist.images[0],
         name: playlist.name,
-        trackCount: playlist.tracks.total
+        trackCount: playlist.tracks.total,
+        owner: playlist.owner.id
       }
     });
   }
@@ -36,24 +37,21 @@ SpotifyConnector.prototype.getUserPlaylists = function() {
   return new Promise(promiseImp);
 }
 
-SpotifyConnector.prototype.getPlaylistTracks = function(userID, playlistID) {
-
-}
-
-SpotifyConnector.prototype.getMoods = function(playlistIDs) {
+SpotifyConnector.prototype.getMoods = function(playlists) {
   const that = this;
 
   return co(function*() {
     let tracks = {};
 
     // Get tracks
-    for (let i in playlistIDs) {
-      let playlistID = playlistIDs[i];
+    for (let i in playlists) {
+      let ownerID = playlists[i].owner;
+      let playlistID = playlists[i].id;
 
       // Get tracks in batches
       let playlist = [];
       for (let offset = 0;; offset += 100) {
-        const batch = yield that.api.getPlaylistTracks(that.userID, playlistID, { offset: offset });
+        const batch = yield that.api.getPlaylistTracks(ownerID, playlistID, { offset: offset });
         playlist = [...playlist, ...batch.items];
 
         if (!batch.next) {
@@ -85,6 +83,10 @@ SpotifyConnector.prototype.getMoods = function(playlistIDs) {
 
       const audioFeatures = (yield that.api.getAudioFeaturesForTracks(batchTrackIDs)).audio_features;
       audioFeatures.forEach((audioFeature) => {
+        if (!audioFeature) {
+          return;
+        }
+
         let track = tracks[audioFeature.id];
         let valence = audioFeature.valence;
         let energy = audioFeature.energy;
