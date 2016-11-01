@@ -1,1 +1,1 @@
-web: NODE_ENV=prod node ./mainServer.js
+web: node ./mainServer.js
