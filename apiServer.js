@@ -40,6 +40,7 @@ module.exports = (PORT) => {
         res.redirect('/#fetch');
       })
       .catch((error) => {
+        console.log(error);
         res.redirect('/#invalid_auth_code');
       });
   });
