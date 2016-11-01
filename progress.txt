@@ -11,7 +11,7 @@ MVP:
 for request
 * Disable 'Analyze' button if none are selected
 * Disable 'Analyze' button once clicked
-- Add back button to moods
+* Add back button to moods
 
 NICE:
 - Expandable/collapsable moods

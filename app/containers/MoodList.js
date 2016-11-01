@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { hashHistory } from 'react-router';
 import ListItem from '../components/ListItem';
+import BigButton from '../components/BigButton';
 
 class MoodList extends Component {
   constructor(props) {
@@ -55,8 +57,14 @@ class MoodList extends Component {
 
   render() {
     return (
-      <div className="list">
-        {this.getListItems()}
+      <div>
+        <BigButton
+          onClick={() => hashHistory.push('/playlists') }
+          text="Back To Playlists"
+        />
+        <div className="list">
+          {this.getListItems()}
+        </div>
       </div>
     );
   }
