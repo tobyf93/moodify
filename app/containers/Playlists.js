@@ -77,11 +77,16 @@ class Playlists extends Component {
   }
 
   render() {
+    let onClick;
+    if (this.state.selectedPlaylists.length) {
+      onClick = () => this.props.analysePlaylists(this.state.selectedPlaylists);
+    }
+
     return (
       <div className="list">
         <BigButton
           text={this.buttonText()}
-          onClick={() => this.props.analysePlaylists(this.state.selectedPlaylists)}
+          onClick={onClick}
         />
         {this.getListItems()}
       </div>

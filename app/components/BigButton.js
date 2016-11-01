@@ -6,8 +6,14 @@ export default class BigButton extends Component {
   }
 
   render() {
+    let className = 'big-button ';
+
+    if (!this.props.onClick) {
+      className += 'disabled';
+    }
+
     return (
-      <div  id="button"
+      <div  className={className}
             onClick={this.props.onClick}>
         {this.props.text}
       </div>

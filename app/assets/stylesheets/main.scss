@@ -43,7 +43,7 @@ hr {
   }
 }
 
-#button {
+.big-button {
   background-color: $green;
   width: 300px;
   margin: 0 auto;
@@ -51,9 +51,17 @@ hr {
   border-radius: 25px;
   transition: all .2s ease-in-out;
   text-align: center;
+
+  &.disabled {
+    opacity: 0.5;
+
+    &:hover {
+      transform: scale(1);
+    }
+  }
 }
 
-#button:hover {
+.big-button:hover {
   background-color: $light-green;
   cursor: pointer;
   transform: scale(1.1);
@@ -103,51 +111,6 @@ hr {
     border: 2px solid white;
     color: white;
   }
-
-  // &.light {
-  //   border-color: $light-grey;
-  //   color: $light-grey;
-  // }
-  //
-  // &.exciting {
-  //   border-color: $green;
-  //   color: $green;
-  // }
-  //
-  // &.happy {
-  //   border-color: yellow;
-  //   color: yellow;
-  // }
-  //
-  // &.chilled {
-  //   border-color: blue;
-  //   color: blue;
-  // }
-  //
-  // &.peaceful {
-  //   border-color: purple;
-  //   color: purple;
-  // }
-  //
-  // &.boring {
-  //   border-color: orange;
-  //   color: orange;
-  // }
-  //
-  // &.depressing {
-  //   border-color: brown;
-  //   color: brown;
-  // }
-  //
-  // &.stressful {
-  //   border-color: white;
-  //   color: white;
-  // }
-  //
-  // &.aggressive {
-  //   border-color: red;
-  //   color: red;
-  // }
 
   img {
     height: 100%;

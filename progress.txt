@@ -9,7 +9,7 @@ MVP:
 * Fix playlists limit (100)
 * Fix playlists from different artists.  will need to have the correct userID available
 for request
-- Disable 'Analyze' button if none are selected
+* Disable 'Analyze' button if none are selected
 - Disable 'Analyze' button once clicked
 - Add back button to moods
 
