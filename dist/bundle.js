@@ -34845,12 +34845,8 @@
 	function analysePlaylists(playlists) {
 	  var spotifyConnector = new _SpotifyConnector2.default();
 
-	  var playlistIDs = playlists.map(function (playlist) {
-	    return playlist.id;
-	  });
-
 	  return function (dispatch) {
-	    spotifyConnector.getMoods(playlistIDs).then(function (moods) {
+	    spotifyConnector.getMoods(playlists).then(function (moods) {
 	      dispatch({ type: _moods.ADD_MOODS, moods: moods });
 	      _reactRouter.hashHistory.push('/moods');
 	    });
@@ -44705,6 +44701,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var Spotify = __webpack_require__(548),
 	    cookie = __webpack_require__(542),
 	    co = __webpack_require__(549),
@@ -44731,7 +44730,8 @@
 	        selected: false,
 	        thumbnail: playlist.images[0],
 	        name: playlist.name,
-	        trackCount: playlist.tracks.total
+	        trackCount: playlist.tracks.total,
+	        owner: playlist.owner.id
 	      };
 	    });
 	  };
@@ -44745,15 +44745,13 @@
 	  return new Promise(promiseImp);
 	};
 
-	SpotifyConnector.prototype.getPlaylistTracks = function (userID, playlistID) {};
-
-	SpotifyConnector.prototype.getMoods = function (playlistIDs) {
+	SpotifyConnector.prototype.getMoods = function (playlists) {
 	  var that = this;
 
 	  return co(regeneratorRuntime.mark(function _callee() {
 	    var _this2 = this;
 
-	    var tracks, _loop, i, moods, trackIDs, audioFeatures;
+	    var tracks, _loop, i, moods, trackIDs, batchSize, offset, batchTrackIDs, audioFeatures;
 
 	    return regeneratorRuntime.wrap(function _callee$(_context2) {
 	      while (1) {
@@ -44764,21 +44762,49 @@
 	            // Get tracks
 
 	            _loop = regeneratorRuntime.mark(function _loop(i) {
-	              var playlistID, playlist;
+	              var ownerID, playlistID, playlist, _offset, batch;
+
 	              return regeneratorRuntime.wrap(function _loop$(_context) {
 	                while (1) {
 	                  switch (_context.prev = _context.next) {
 	                    case 0:
-	                      playlistID = playlistIDs[i];
-	                      _context.next = 3;
-	                      return that.api.getPlaylistTracks(that.userID, playlistID);
+	                      ownerID = playlists[i].owner;
+	                      playlistID = playlists[i].id;
 
-	                    case 3:
-	                      playlist = _context.sent;
+	                      // Get tracks in batches
 
+	                      playlist = [];
+	                      _offset = 0;
+
+	                    case 4:
+	                      _context.next = 6;
+	                      return that.api.getPlaylistTracks(ownerID, playlistID, { offset: _offset });
+
+	                    case 6:
+	                      batch = _context.sent;
+
+	                      playlist = [].concat(_toConsumableArray(playlist), _toConsumableArray(batch.items));
+
+	                      if (batch.next) {
+	                        _context.next = 10;
+	                        break;
+	                      }
+
+	                      return _context.abrupt('break', 13);
+
+	                    case 10:
+	                      _offset += 100;
+	                      _context.next = 4;
+	                      break;
+
+	                    case 13:
 
 	                      // Save all tracks from playlist, indexed by ID for quicker access later
-	                      playlist.items.forEach(function (playlistItem) {
+	                      playlist.forEach(function (playlistItem) {
+	                        if (!playlistItem.track) {
+	                          return;
+	                        }
+
 	                        tracks[playlistItem.track.id] = {
 	                          playlistID: playlistID,
 	                          name: playlistItem.track.name,
@@ -44788,14 +44814,14 @@
 	                        };
 	                      });
 
-	                    case 5:
+	                    case 14:
 	                    case 'end':
 	                      return _context.stop();
 	                  }
 	                }
 	              }, _loop, _this2);
 	            });
-	            _context2.t0 = regeneratorRuntime.keys(playlistIDs);
+	            _context2.t0 = regeneratorRuntime.keys(playlists);
 
 	          case 3:
 	            if ((_context2.t1 = _context2.t0()).done) {
@@ -44816,13 +44842,31 @@
 	            // object with tracks.
 	            moods = {};
 	            trackIDs = Object.keys(tracks);
-	            _context2.next = 12;
-	            return that.api.getAudioFeaturesForTracks(trackIDs);
+	            batchSize = 100;
+	            offset = 0;
 
 	          case 12:
+	            batchTrackIDs = trackIDs.slice(offset, offset + batchSize);
+
+	            if (batchTrackIDs.length) {
+	              _context2.next = 15;
+	              break;
+	            }
+
+	            return _context2.abrupt('break', 22);
+
+	          case 15:
+	            _context2.next = 17;
+	            return that.api.getAudioFeaturesForTracks(batchTrackIDs);
+
+	          case 17:
 	            audioFeatures = _context2.sent.audio_features;
 
 	            audioFeatures.forEach(function (audioFeature) {
+	              if (!audioFeature) {
+	                return;
+	              }
+
 	              var track = tracks[audioFeature.id];
 	              var valence = audioFeature.valence;
 	              var energy = audioFeature.energy;
@@ -44832,9 +44876,15 @@
 	              moods[mood].push(track);
 	            });
 
+	          case 19:
+	            offset += batchSize;
+	            _context2.next = 12;
+	            break;
+
+	          case 22:
 	            return _context2.abrupt('return', moods);
 
-	          case 15:
+	          case 23:
 	          case 'end':
 	            return _context2.stop();
 	        }
@@ -46459,42 +46509,111 @@
 
 	'use strict';
 
+	// https://kinesiscem.files.wordpress.com/2015/09/moods.jpg
 	var _moods = [{
-	  name: 'light',
-	  valence: 0.500,
-	  energy: 0.500
+	  name: 'distressed',
+	  valence: 0.15,
+	  energy: 0.78
 	}, {
-	  name: 'exciting',
-	  valence: 0.691,
-	  energy: 0.962
+	  name: 'frustrated',
+	  valence: 0.3,
+	  energy: 0.69
+	}, {
+	  name: 'angry',
+	  valence: 0.29,
+	  energy: 0.89
+	}, {
+	  name: 'annoyed',
+	  valence: 0.28,
+	  energy: 0.83
+	}, {
+	  name: 'alarmed',
+	  valence: 0.46,
+	  energy: 0.95
+	}, {
+	  name: 'tense',
+	  valence: 0.49,
+	  energy: 0.93
+	}, {
+	  name: 'afraid',
+	  valence: 0.45,
+	  energy: 0.89
+	}, {
+	  name: 'aroused',
+	  valence: 0.68,
+	  energy: 0.96
+	}, {
+	  name: 'astonished',
+	  valence: 0.71,
+	  energy: 0.94
+	}, {
+	  name: 'excited',
+	  valence: 0.85,
+	  energy: 0.86
+	}, {
+	  name: 'delighted',
+	  valence: 0.94,
+	  energy: 0.68
 	}, {
 	  name: 'happy',
-	  valence: 0.962,
-	  energy: 0.691
+	  valence: 0.95,
+	  energy: 0.58
 	}, {
-	  name: 'chilled',
-	  valence: 0.962,
-	  energy: 0.309
+	  name: 'pleased',
+	  valence: 0.94,
+	  energy: 0.45
 	}, {
-	  name: 'peaceful',
-	  valence: 0.591,
-	  energy: 0.038
+	  name: 'glad',
+	  valence: 0.98,
+	  energy: 0.42
 	}, {
-	  name: 'boring',
-	  valence: 0.309,
-	  energy: 0.038
+	  name: 'content',
+	  valence: 0.91,
+	  energy: 0.23
 	}, {
-	  name: 'depressing',
-	  valence: 0.038,
-	  energy: 0.309
+	  name: 'at ease',
+	  valence: 0.88,
+	  energy: 0.2
 	}, {
-	  name: 'stressful',
-	  valence: 0.038,
-	  energy: 0.691
+	  name: 'satisfied',
+	  valence: 0.88,
+	  energy: 0.18
 	}, {
-	  name: 'aggressive',
-	  valence: 0.309,
-	  energy: 0.962
+	  name: 'relaxed',
+	  valence: 0.86,
+	  energy: 0.17
+	}, {
+	  name: 'sleepy',
+	  valence: 0.01,
+	  energy: 0.01
+	}, {
+	  name: 'miserable',
+	  valence: 0.04,
+	  energy: 0.43
+	}, {
+	  name: 'sad',
+	  valence: 0.09,
+	  energy: 0.3
+	}, {
+	  name: 'gloomy',
+	  valence: 0.06,
+	  energy: 0.27
+	}, {
+	  name: 'depressed',
+	  valence: 0.09,
+	  energy: 0.27
+	}, {
+	  name: 'bored',
+	  valence: 0.33,
+	  energy: 0.1
+	}, {
+	  name: 'droopy',
+	  valence: 0.34,
+	  energy: 0.04
+	}, {
+	  name: 'tired',
+	  valence: 0.49,
+	  energy: 0.01
 	}];
 
 	function getMood(valence, energy) {
@@ -47051,7 +47170,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Varela+Round);", ""]);
 
 	// module
-	exports.push([module.id, "html {\n  background-color: #000;\n  color: #fff; }\n\nbody {\n  font-family: 'Varela Round', sans-serif;\n  font-size: 16px; }\n\nhr {\n  border-top-color: #828282; }\n\n#app {\n  width: 600px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n#header {\n  text-align: center;\n  margin: 25px 0; }\n  #header #brandName {\n    font-size: 2.5em; }\n  #header .logo {\n    font-size: 150px;\n    color: #2ebd59;\n    margin-bottom: 15px; }\n\n#button {\n  background-color: #2ebd59;\n  width: 300px;\n  margin: 0 auto;\n  line-height: 50px;\n  border-radius: 25px;\n  transition: all .2s ease-in-out;\n  text-align: center; }\n\n#button:hover {\n  background-color: #42c369;\n  cursor: pointer;\n  transform: scale(1.1); }\n\n.list {\n  max-width: 100%;\n  margin: 0 auto; }\n\n.list-item {\n  display: flex;\n  padding: 5px 15px 5px 5px;\n  opacity: 0.75; }\n  .list-item.selected {\n    opacity: 1; }\n    .list-item.selected .list-item-title {\n      color: #2ebd59; }\n\n.list-item:hover {\n  cursor: pointer;\n  opacity: 1; }\n\n.list-item:not(:last-child) {\n  border-bottom: 0.5px solid #434343; }\n\n.list-item-thumbnail {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 64px;\n  width: 64px;\n  margin-right: 10px;\n  text-align: center;\n  font-size: 2em; }\n  .list-item-thumbnail.mood {\n    height: 60px;\n    width: 60px;\n    border: 2px solid white;\n    color: white; }\n  .list-item-thumbnail img {\n    height: 100%;\n    width: 100%; }\n\n.list-item-desc {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  justify-content: center; }\n\n.list-item-title {\n  font-size: 1.2em; }\n\n.list-item-sub-title {\n  color: #828282; }\n\n.list-item-icon {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  margin-left: 10px; }\n  .list-item-icon .tick-icon {\n    color: #2ebd59;\n    font-size: 1.5em; }\n  .list-item-icon .cross-icon {\n    font-size: 1.5em; }\n  .list-item-icon .chevron-icon {\n    font-size: 1em; }\n", ""]);
+	exports.push([module.id, "html {\n  background-color: #000;\n  color: #fff; }\n\nbody {\n  font-family: 'Varela Round', sans-serif;\n  font-size: 16px; }\n\nhr {\n  border-top-color: #828282; }\n\n#app {\n  width: 600px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n#header {\n  text-align: center;\n  margin: 25px 0; }\n  #header #brandName {\n    font-size: 2.5em; }\n  #header .logo {\n    font-size: 150px;\n    color: #2ebd59;\n    margin-bottom: 15px; }\n\n.big-button {\n  background-color: #2ebd59;\n  width: 300px;\n  margin: 0 auto 25px auto;\n  line-height: 50px;\n  border-radius: 25px;\n  transition: all .2s ease-in-out;\n  text-align: center; }\n  .big-button.disabled {\n    opacity: 0.5; }\n    .big-button.disabled:hover {\n      transform: scale(1); }\n\n.big-button:hover {\n  background-color: #42c369;\n  cursor: pointer;\n  transform: scale(1.1); }\n\n.list {\n  max-width: 100%;\n  margin: 0 auto; }\n\n.list-item {\n  display: flex;\n  padding: 5px 15px 5px 5px;\n  opacity: 0.75; }\n  .list-item.selected {\n    opacity: 1; }\n    .list-item.selected .list-item-title {\n      color: #2ebd59; }\n\n.list-item:hover {\n  cursor: pointer;\n  opacity: 1; }\n\n.list-item:not(:last-child) {\n  border-bottom: 0.5px solid #434343; }\n\n.list-item-thumbnail {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 64px;\n  width: 64px;\n  margin-right: 10px;\n  text-align: center;\n  font-size: 2em; }\n  .list-item-thumbnail.mood {\n    height: 60px;\n    width: 60px;\n    border: 2px solid white;\n    color: white; }\n  .list-item-thumbnail img {\n    height: 100%;\n    width: 100%; }\n\n.list-item-desc {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  justify-content: center; }\n\n.list-item-title {\n  font-size: 1.2em; }\n\n.list-item-sub-title {\n  color: #828282; }\n\n.list-item-icon {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  margin-left: 10px; }\n  .list-item-icon .tick-icon {\n    color: #2ebd59;\n    font-size: 1.5em; }\n  .list-item-icon .cross-icon {\n    font-size: 1.5em; }\n  .list-item-icon .chevron-icon {\n    font-size: 1em; }\n", ""]);
 
 	// exports
 
@@ -47438,7 +47557,7 @@
 /* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -47468,11 +47587,17 @@
 	  }
 
 	  _createClass(BigButton, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
+	      var className = 'big-button ';
+
+	      if (!this.props.onClick) {
+	        className += 'disabled';
+	      }
+
 	      return _react2.default.createElement(
-	        "div",
-	        { id: "button",
+	        'div',
+	        { className: className,
 	          onClick: this.props.onClick },
 	        this.props.text
 	      );
@@ -47607,7 +47732,8 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Playlists).call(this, props));
 
 	    _this.state = {
-	      selectedPlaylists: _this.selectedPlaylists(_this.props.playlists)
+	      selectedPlaylists: _this.selectedPlaylists(_this.props.playlists),
+	      requestSent: false
 	    };
 	    return _this;
 	  }
@@ -47675,6 +47801,10 @@
 	        text += 's';
 	      }
 
+	      if (this.state.requestSent) {
+	        text = 'Gathering Data...';
+	      }
+
 	      return text;
 	    }
 	  }, {
@@ -47682,14 +47812,23 @@
 	    value: function render() {
 	      var _this3 = this;
 
+	      var onClick = void 0;
+
+	      // Only activate button if there are playlists selected and the button has NOT
+	      // already been clicked.
+	      if (!this.state.requestSent && this.state.selectedPlaylists.length) {
+	        onClick = function onClick() {
+	          _this3.setState({ requestSent: true });
+	          _this3.props.analysePlaylists(_this3.state.selectedPlaylists);
+	        };
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'list' },
 	        _react2.default.createElement(_BigButton2.default, {
 	          text: this.buttonText(),
-	          onClick: function onClick() {
-	            return _this3.props.analysePlaylists(_this3.state.selectedPlaylists);
-	          }
+	          onClick: onClick
 	        }),
 	        this.getListItems()
 	      );
@@ -64489,9 +64628,15 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _reactRouter = __webpack_require__(478);
+
 	var _ListItem = __webpack_require__(557);
 
 	var _ListItem2 = _interopRequireDefault(_ListItem);
+
+	var _BigButton = __webpack_require__(563);
+
+	var _BigButton2 = _interopRequireDefault(_BigButton);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64564,8 +64709,18 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'list' },
-	        this.getListItems()
+	        null,
+	        _react2.default.createElement(_BigButton2.default, {
+	          onClick: function onClick() {
+	            return _reactRouter.hashHistory.push('/playlists');
+	          },
+	          text: 'Back To Playlists'
+	        }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'list' },
+	          this.getListItems()
+	        )
 	      );
 	    }
 	  }]);
