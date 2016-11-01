@@ -12,7 +12,8 @@ class Playlists extends Component {
     super(props);
 
     this.state = {
-      selectedPlaylists: this.selectedPlaylists(this.props.playlists)
+      selectedPlaylists: this.selectedPlaylists(this.props.playlists),
+      requestSent: false
     };
   }
 
@@ -73,13 +74,23 @@ class Playlists extends Component {
       text += 's';
     }
 
+    if (this.state.requestSent) {
+      text = 'Gathering Data...';
+    }
+
     return text;
   }
 
   render() {
     let onClick;
-    if (this.state.selectedPlaylists.length) {
-      onClick = () => this.props.analysePlaylists(this.state.selectedPlaylists);
+
+    // Only activate button if there are playlists selected and the button has NOT
+    // already been clicked.
+    if (!this.state.requestSent && this.state.selectedPlaylists.length) {
+      onClick = () => {
+        this.setState({ requestSent: true });
+        this.props.analysePlaylists(this.state.selectedPlaylists);
+      }
     }
 
     return (
