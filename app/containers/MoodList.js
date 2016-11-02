@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { hashHistory } from 'react-router';
 import ListItem from '../components/ListItem';
 import BigButton from '../components/BigButton';
+import MoodItem from '../components/MoodItem';
 
 class MoodList extends Component {
   constructor(props) {
@@ -14,45 +15,19 @@ class MoodList extends Component {
     console.log('mood clicked');
   }
 
-  getListItems() {
-    let listItems = [];
+  getMoodItems() {
+    let moodItems = [];
 
     for (let mood in this.props.tracksByMood) {
-      let tracks = this.props.tracksByMood[mood];
-      let moodClass = `list-item-thumbnail mood ${mood}`;
-
-      let thumbnail = (
-        <div className={moodClass}>
-          {mood[0]}
-        </div>
-      );
-
-      listItems.push(
-        <ListItem
-          key={mood}
-          listItemClass="list-item"
-          itemClicked={() => this.itemClicked()}
-          thumbnail={thumbnail}
-          title={mood}
-          subTitle={tracks.length + ' tracks'}
-          iconClass="fa fa-chevron-down chevron-icon"
+      moodItems.push(
+        <MoodItem
+          mood={mood}
+          tracks={this.props.tracksByMood[mood]}
         />
       );
-
-      tracks.forEach((track) => {
-        listItems.push(
-          <ListItem
-            key={track.id}
-            listItemClass="list-item"
-            itemClicked={() => this.itemClicked()}
-            title={track.name}
-            subTitle={track.artists}
-          />
-        );
-      });
     }
 
-    return listItems;
+    return moodItems;
   }
 
   render() {
@@ -63,7 +38,7 @@ class MoodList extends Component {
           text="Back To Playlists"
         />
         <div className="list">
-          {this.getListItems()}
+          {this.getMoodItems()}
         </div>
       </div>
     );

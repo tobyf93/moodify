@@ -3,7 +3,6 @@ require('../assets/stylesheets/main.scss');
 
 import React, { Component } from 'react';
 import { derivedStates } from '../selectors';
-import MoodList from '../components/MoodList';
 
 class Main extends Component {
   constructor(props) {

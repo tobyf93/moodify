@@ -18,7 +18,7 @@ const ListItem = (props) => {
 };
 
 ListItem.propTypes = {
-  itemClicked: PropTypes.func.isRequired,
+  itemClicked: PropTypes.func,
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired
 }
