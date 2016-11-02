@@ -4,6 +4,12 @@ var express = require('express'),
     SpotifyConnector = require('./lib/SpotifyConnector'),
     co = require('co');
 
+const getRedirectUri = (req) => {
+  var redirectUri = req.protocol + '://' + req.hostname + '/callback';
+  redirectUri = redirectUri.replace('localhost', 'localhost:3000');
+  return redirectUri;
+}
+
 module.exports = (PORT) => {
   var app = express();
 
@@ -13,8 +19,7 @@ module.exports = (PORT) => {
      .use(express.static('dist'));
 
   app.get('/login', (req, res) => {
-    var redirectUri = req.protocol + '://' + req.hostname + '/callback';
-    redirectUri = redirectUri.replace('localhost', 'localhost:3000');
+    var redirectUri = getRedirectUri(req);
 
     var config = {
       scopes: ['user-read-private', 'user-read-email'],
@@ -27,8 +32,7 @@ module.exports = (PORT) => {
   });
 
   app.get('/callback', (req, res) => {
-    var redirectUri = req.protocol + '://' + req.hostname + '/callback';
-    redirectUri = redirectUri.replace('localhost', 'localhost:3000');
+    var redirectUri = getRedirectUri(req);
     const config = req.query;
     config.redirectUri = redirectUri;
     var spotifyConnector = new SpotifyConnector(config);
@@ -45,48 +49,6 @@ module.exports = (PORT) => {
       .catch((error) => {
         console.log(error);
         res.redirect('/#invalid_auth_code');
-      });
-  });
-
-  app.get('/playlists', (req, res) => {
-    const config = req.cookies;
-    var spotifyConnector = new SpotifyConnector(config);
-
-    spotifyConnector
-      .getUserPlaylists()
-      .then((playlists) => {
-        res.send(JSON.stringify(playlists));
-      })
-      .catch((error) => {
-        res.send(error);
-      })
-  });
-
-  // TODO: Only doing first playlist
-  app.post('/moods', (req, res) => {
-    const playlistIDs = req.body;
-    const playlistID = playlistIDs[0];
-    const config = req.cookies;
-    var spotifyConnector = new SpotifyConnector(config);
-
-    // co(function* () {
-    //   playlistIDs.forEach((playlistID) => {
-    //     let tracks = yield spotifyConnector.getPlaylistTracks(playlistID);
-    //     console.log('tracks', tracks);
-    //   });
-    // });
-
-    spotifyConnector
-      .getPlaylistTracks(playlistID)
-      .then((tracks) => {
-        // TODO: Quick hack
-        var playlists = {};
-        playlists[playlistID] = tracks;
-
-        res.send(JSON.stringify(playlists));
-      })
-      .catch((error) => {
-        res.send(error);
       });
   });
 
